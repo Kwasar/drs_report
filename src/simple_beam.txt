@@ -44,7 +44,6 @@ ASEL,S,LOC,Y,-1e-3,1e-3	!symmetry boundary condition
 DA,ALL,UY,0
 
 ASEL,S,LOC,Z,-1e-9,1e-9	!Interface between beam and air (bottom of the beam)
-ASEL,R,LOC,X,l-gap_length,l
 SFA,ALL,,FSIN,1	!field surface interface number 1
 ALLSEL,ALL
 SBCTRAN		!Transfer BC and load from solid model to FE model
