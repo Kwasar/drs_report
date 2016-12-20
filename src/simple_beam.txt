@@ -1,0 +1,138 @@
+!Electrostatic beam with ANSYS MFS solver
+FINISH
+/CLEAR
+/TITLE,Electrostatic beam
+/COM ---- Parameters (Geometry + Materials)
+!Use uMKS unit system
+
+l=150                  ! beam length, um
+t=2                    ! beam thickness, um
+w=8                    ! beam width, um
+g=0.2                  ! gap, um
+gap_length=30          ! um
+V=10    				!applied voltage
+
+/COM --- Structural model (field 1)
+Y=169e3	!Si Young's modulus
+nu=0.36	!Poisson ratio
+
+
+/PREP7
+ET,1,SOLID186	!Solid186 used to model the beam
+
+MP,EX,1,Y	!Young's modulus
+MP,PRXY,1,nu	!Poisson ratio
+
+!We model only half of the beam in the width
+BLOCK,0,l,0,w/2,0,t	!Creates 1/4th of the beam
+
+LSEL,S,LOC,X,l/4	!selects the 4 lines along the length of the beam
+LESIZE,ALL,,,30		!cut in 15 parts
+
+LSEL,S,LOC,Y,w/4	!selects the 4 lines along the width
+LESIZE,ALL,,,4		!cut in two parts
+LSEL,S,LOC,Z,t/2	!adds the 4 lines along the height
+LESIZE,ALL,,,2		!cut in two parts
+
+ALLSEL,ALL
+VMESH,ALL	!mesh the volume
+		
+ASEL,S,LOC,X,-1e-3,1e-3	!clamp the end of the beam
+DA,ALL,ALL,0
+
+ASEL,S,LOC,Y,-1e-3,1e-3	!symmetry boundary condition
+DA,ALL,UY,0
+
+ASEL,S,LOC,Z,-1e-9,1e-9	!Interface between beam and air (bottom of the beam)
+SFA,ALL,,FSIN,1	!field surface interface number 1
+ALLSEL,ALL
+SBCTRAN		!Transfer BC and load from solid model to FE model
+
+/COM ---- Electrostatic model (field 2)
+ET,2,SOLID123	!Solid123 is used to model the airgap
+
+EMUNIT,EPZRO,8.854e-6	!as we are using uMKS units, eps0 must be given in pF/um
+MP,PERX,2,1	!relative permittivity of material 2 set to 1 (air)
+!MORPH,ON	!enable morphing for the electrostatic elements
+
+BLOCK,l-gap_length,l,0,w/2,0,-g	!creates the airgap below the beam
+
+VSEL,S,VOLU,,2	!select the new volume
+ESIZE,t/2
+VATT,2,,2		!Element 2 and material 2
+VMESH,ALL		!Mesh volume 2
+
+!Because of mesh morphing, we need to apply displacement BCs
+
+ASLV,S
+ASEL,R,LOC,X,0	!lock x displacement at the beam anchor
+DA,ALL,UX,0
+
+ASLV,S
+ASEL,R,LOC,Y,0	!lock the y displacement along the symmetry line
+DA,ALL,UY,0
+
+ASLV,S
+ASEL,R,LOC,Y,w/2	!lock the y displacement along the long side of the beam
+DA,ALL,UY,0
+
+ASLV,S
+ASEL,R,LOC,Z,-g	!lock the bottom of the airgap and apply 0 V
+DA,ALL,UZ,0
+DA,ALL,VOLT,0
+
+ASLV,S
+ASEL,R,LOC,Z,0	!interface between beam and air as interface and with voltage V
+SFA,ALL,,FSIN,1
+DA,ALL,VOLT,V
+
+ALLSEL,ALL
+SBCTRAN
+VPLOT
+/ANGLE,1,-40,XM,1
+/ANGLE,1,-30,ZM,1
+/REPLOT
+FINISH
+
+/SOLU
+!Fields definition
+MFELEM,1,1	!field 1 (structural) is element 1 (SOLID186)
+MFFNAME,1,beam	!set name for structural result file
+MFELEM,2,2	!field 2 (electrostatic) is element 2 (SOLID123)
+MFFNAME,2,airgap	!set name for electrostatic result file
+MFCLEAR,SOLU	!reset all of the solution options
+ANTYPE,STATIC	!static analysis
+!EQSLV,ICCG
+MORPH,ON		!enables mesh morphing
+MFCMMAND,2		!save these parameters for field 2 (electrostatic)
+
+MFCLEAR,SOLU	!reset all of the solution options
+ANTYPE,STATIC	!static analysis
+NLGEOM,ON		!non-linearities
+DELTIM,2        ! Field loop time increment within a stagger (force is increased with 10V increments)
+MORPH,OFF		!No morphing
+MFCMMAND,1		!Save these parameters for field 1 (structural)
+
+KBC,0           ! Ramp Force load (KBC is a global option, not field specific
+
+!setup of interface load transfer
+MFSURFACE,1,1,DISP,2	!Transfer displacement of interface 1 from field 1 to field 2
+MFSURFACE,1,2,FORC,1	!Transfer force of interface 1 from field 2 to field 1
+
+!setup of Global field solution
+MFANALYSIS,ON	!turn on multiphysics analysis
+MFINTER,CONS	!globally conservative load transfer
+MFORDER,2,1		!start with the electrostatic field, then the displacement field
+
+!Setup stagger solution
+MFITER,10	!20 maximal iteration within a stagger
+MFCONV,ALL,1e-5	!convergence criterion for all DOF (default is 1e-6)
+
+!Setup time control
+MFTIME,V	!set the final time to the Voltage value for easy mapping
+MFDTIME,2	!10V interval between each stagger
+MFOUTPUT,1	!write the result at every step
+
+SOLVE
+SAVE
+FINISH
