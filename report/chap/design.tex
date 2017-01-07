@@ -23,6 +23,13 @@ Deflection of a beam:
 	\label{eq:beam_deflection}
 \end{equation}
 
+Effective mass:
+\begin{equation}
+	m_{eff} = \rho A \int_0^l{\left[\frac{y(x)}{y(l)_{max}}\right]^2dx}
+	\label{eq:effective_mass}
+\end{equation}
+
+
 - Frequency response / Minimal switching
 Spring constant:
 \begin{equation}
@@ -32,13 +39,34 @@ Spring constant:
 
 Resonance frequency:
 \begin{equation}
-	\omega_0 = \sqrt{\frac{k}{m}}
+	\omega_0 = \sqrt{\frac{k}{m_{eff}}}
 	\label{eq:resonance_frequency}
 \end{equation}
 
+Capacitance actuator pad:
+\begin{equation}
+	C = \frac{\varepsilon A}{d}
+	\label{eq:plate_capacitor}
+\end{equation}
 
-- Electrostatic analysis
+- Electrostatic analysis / Force <-> Area
+Note: Distance smaller than surface, neglect fringes because of aspect ratio
+\begin{equation}
+	F_{ES} = \frac{\varepsilon AV^2}{2d^2}
+	\label{eq:electrostatic_force}
+\end{equation}
+
+- Electric properties of contacts
+Resistance:
+\begin{equation}
+	R = \rho\frac{l}{wt}
+	\label{eq:resistance}
+\end{equation}
+
 - Failure
+
+- Thermal
+Not critical blablabla 
 
 \subsection{Analysis}
 \label{sec:analysis}
