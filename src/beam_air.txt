@@ -127,11 +127,11 @@ VMESH,ALL
 !VATT,2	!Material 2 (air)
 !VMESH,ALL
 
-!VSEL,S,LOC,Z,w/2
-!VSEL,R,LOC,Y, t_pad/2
-!VSEL,R,LOC,X, a
-!VATT,3	!Material 3 (gold)
-!VMESH,ALL
+VSEL,S,LOC,Z,w/2
+VSEL,R,LOC,Y, t_pad/2
+VSEL,R,LOC,X, a
+VATT,2	!Material 1 (air)
+VMESH,ALL
 
 VSEL,S,LOC,Z,w/2
 VSEL,R,LOC,Y, gap + t_pad + t_pad/2
