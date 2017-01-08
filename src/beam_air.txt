@@ -104,7 +104,7 @@ A,01,02,03,04 ! air on the side
 VOFFST,k,w !Creates the volume by extrusion in the thicknedd direction
 *ENDDO
 
-VOFFST,9,-w_air
+!VOFFST,9,-w_air
 
 NUMMRG,KP,1e-9,1e-9	!merge the coincident keypoints that were created with the VOFFST command
 
@@ -120,9 +120,9 @@ VSEL,R,LOC,Y, t_pad + gap/2
 VATT,2	!Material 2 (air)
 VMESH,ALL
 
-VSEL,S,LOC,Z,-w_air/2
-VATT,2	!Material 2 (air)
-VMESH,ALL
+!VSEL,S,LOC,Z,-w_air/2
+!VATT,2	!Material 2 (air)
+!VMESH,ALL
 
 VSEL,S,LOC,Z,w/2
 VSEL,R,LOC,Y, t_pad/2
@@ -165,7 +165,7 @@ FINISH
 /SOLU
 ANTYPE,STATIC
 CNVTOL,f,1,1.e-4     ! Define convergence tolerances
-!nlgeom,on            ! Large deflection analysis
+!nlgeom,on           ! Large deflection analysis
 NSUBST,5,20,2
 SOLVE
 FINISH
