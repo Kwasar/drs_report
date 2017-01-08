@@ -2,12 +2,12 @@ FINISH
 /CLEAR
 /TITLE, Beam and some air
 /COM ---- Parameters
-l=200e-6
-a=150e-6
-w=50e-6
-t=20E-6
-l_pad=40e-6
-t_pad=5e-6
+l=200e-6		! beam length
+a=150e-6		! pad position
+w=50e-6			! beam width
+t=20e-6 		! beam thickness
+l_pad=40e-6		! pad length
+t_pad=5e-6 		! pad thickness
 gap=20e-6
 w_air=50e-6
 V=1
@@ -36,7 +36,7 @@ eps_au=1e13
 /PREP7
 ET,1,SOLID226,1001	!3-D 20-Node Coupled-Field Solid. Switch on DOF disp and electro static
 
-EMUNIT,EPZRO,8.854e-12
+EMUNIT,MKS
 
 !Material Properties for Si
 MP,EX,1,Y_si		!Apply Young's modulus
