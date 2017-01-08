@@ -8,7 +8,7 @@ w=50e-6			! beam width
 t=20e-6 		! beam thickness
 l_pad=40e-6		! pad length
 t_pad=5e-6 		! pad thickness
-gap=20e-6
+gap=200e-9      ! air gap
 w_air=50e-6
 V=1
 
@@ -59,35 +59,33 @@ MP,PERX,3,eps_au
 
 
 !The geometry is split into rectangles so that Mapped meshing can be used.
-K, 01, 0, t + gap + 2*t_pad			!Define keypoints 
+K, 01, 0, t + gap + t_pad			!Define keypoints 
 K, 02, 0, 0
 K, 03, l, 0
-K, 04, l, t + gap + 2*t_pad
+K, 04, l, t + gap + t_pad
 
 !bottom beam
-K, 05, 0, 2*t_pad + gap
-K, 06, l, 2*t_pad + gap
+K, 05, 0, t_pad + gap
+K, 06, l, t_pad + gap
 
 !top pad
-K, 07, a - l_pad / 2, 2*t_pad + gap
-K, 08, a - l_pad / 2, t_pad + gap
-K, 09, a + l_pad / 2, t_pad + gap
-K, 10, a + l_pad / 2, 2*t_pad + gap
+K, 07, a - l_pad / 2, t_pad + gap
+K, 08, a - l_pad / 2, gap
+K, 09, a + l_pad / 2, gap
+K, 10, a + l_pad / 2, t_pad + gap
 
 !bottom pad
-K, 11, a - l_pad / 2, t_pad
-K, 12, a - l_pad / 2, 0
-K, 13, a + l_pad / 2, 0
-K, 14, a + l_pad / 2, t_pad
+K, 11, a - l_pad / 2, 0
+K, 12, a + l_pad / 2, 0
 
-K, 15, a + l_pad / 2, t + gap + 2*t_pad
-K, 16, a - l_pad / 2, t + gap + 2*t_pad
+K, 13, a + l_pad / 2, t + gap + t_pad
+K, 14, a - l_pad / 2, t + gap + t_pad
 
 
 !surfaces
 ! beam
 A,01,05,07,16
-A,16,07,10,15
+A,14,07,10,13
 A,15,10,06,04
 
 ! gold pads
@@ -95,9 +93,9 @@ A,07,08,09,10
 
 ! air inside
 A,05,02,12,07
-A,08,11,14,09
-A,10,13,03,06
-A,11,12,13,14		! prior gold, now air
+A,08,11,12,09
+A,10,12,03,06
+!A,11,12,13,14		! prior gold, now air
 
 A,01,02,03,04 ! air on the side
 
@@ -113,28 +111,32 @@ NUMMRG,KP,1e-9,1e-9	!merge the coincident keypoints that were created with the V
 
 ESIZE,t/2
 
+!beam to silicon
 VSEL,S,LOC,Z,w/2
-VSEL,R,LOC,Y, 2*t_pad + gap + t/2
+VSEL,R,LOC,Y, t_pad + gap + t/2
 VATT,1	!Material 1 (silicon)
 VMESH,ALL
 
+!airgap to air
 VSEL,S,LOC,Z,w/2
-VSEL,R,LOC,Y, t_pad + gap/2
+VSEL,R,LOC,Y, gap/2
 VATT,2	!Material 2 (air)
 VMESH,ALL
 
+!thickness to air
 !VSEL,S,LOC,Z,-w_air/2
 !VATT,2	!Material 2 (air)
 !VMESH,ALL
 
-VSEL,S,LOC,Z,w/2
-VSEL,R,LOC,Y, t_pad/2
-VSEL,R,LOC,X, a
-VATT,2	!Material 1 (ai)
-VMESH,ALL
+!VSEL,S,LOC,Z,w/2
+!VSEL,R,LOC,Y, t_pad/2
+!VSEL,R,LOC,X, a
+!VATT,2	!Material 1 (ai)
+!VMESH,ALL
 
+!pad to gold
 VSEL,S,LOC,Z,w/2
-VSEL,R,LOC,Y, gap + t_pad + t_pad/2
+VSEL,R,LOC,Y, gap + t_pad/2
 VSEL,R,LOC,X, a
 VATT,3	!Material 3 (gold)
 VMESH,ALL
