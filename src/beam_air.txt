@@ -27,7 +27,7 @@ rho_air=1E9		!very large electrical resistance for air
 
 /COM --- Geometry and elements
 /PREP7
-ET,1,SOLID226,111	!3-D 20-Node Coupled-Field Solid. Switch on DOF disp,thermal, and electric conduction
+ET,1,SOLID226,1001	!3-D 20-Node Coupled-Field Solid. Switch on DOF disp and electro static
 
 
 !Material Properties for the beam
@@ -140,6 +140,16 @@ ASEL,S,LOC,Y, gap + t_pad
 DA,ALL,VOLT,V
 
 ALLSEL,ALL			!Reselects all
-
-
 FINISH
+
+/SOLU
+ANTYPE,STATIC
+CNVTOL,f,1,1.e-4     ! Define convergence tolerances
+!nlgeom,on            ! Large deflection analysis
+NSUBST,5,20,2
+SOLVE
+FINISH
+
+/POST1
+/CONTOUR,ALL,128
+PLNSOL, U,Y, 2,1.0	!plot the displacement along y
