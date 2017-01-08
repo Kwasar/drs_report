@@ -28,8 +28,9 @@ Using the \emph{Laplace method} we get the solution $x(t) = \frac{F}{k}\left[1-\
 
 The equation (\ref{eq:switching_time}) is only defined for $k x_{gap} < F_{ES}$, because otherwise the applied force wouldn't be strong enough for the beam to reach the contact pad.
 In the valid range of $0 < k < F_{ES}/x_{gap}$, the minimal switching time lies at $k = 0$.
+
 So, a minimal spring constant $k$ would be favorable for a fast response time.
-However, if we consider that we can't apply a negative voltage to our actuator pad, then we'd like a high \emph{resonance frequency} for a fast response time when switching \emph{off}.
+However, can't apply a force that pushed the cantilever back to its initial position, thus we'd like a high \emph{resonance frequency} to get a fast response time when switching \emph{off}.
 The resonance frequency requires a high spring constant for it to be high (equation~\ref{eq:resonance_frequency}).
 There's a trade-off between the switching times in either directions for an optimal over-all switching frequency, which we can pose as an optimization problem (\ref{eq:switching_time_optimization}).
 
