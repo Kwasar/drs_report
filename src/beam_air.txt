@@ -3,7 +3,7 @@ FINISH
 /TITLE, Beam and some air
 /COM ---- Parameters
 l=200e-6
-a=150-6
+a=150e-6
 w=50e-6
 t=20E-6
 l_pad=40e-6
@@ -44,23 +44,23 @@ MP,RSVX,2,rho_air
 
 
 !The geometry is split into rectangles so that Mapped meshing can be used.
-K, 01, 0, 0			!Define keypoints 
-K, 02, 0, t + gap + 2*t_pad
-K, 03, l, t + gap + 2*t_pad
-K, 04, l, 0
+K, 01, 0, t + gap + 2*t_pad			!Define keypoints 
+K, 02, 0, 0
+K, 03, l, 0
+K, 04, l, t + gap + 2*t_pad
 
-K, 05, 0, t
-K, 06, l, t
+K, 05, 0, 2*t_pad + gap
+K, 06, l, 2*t_pad + gap
 
-K, 07, a - l_pad / 2, t
-K, 08, a - l_pad / 2, t + t_pad
-K, 09, a + l_pad / 2, t + t_pad
-K, 10, a + l_pad / 2, t
+K, 07, a - l_pad / 2, 2*t_pad + gap
+K, 08, a - l_pad / 2, t_pad + gap
+K, 09, a + l_pad / 2, t_pad + gap
+K, 10, a + l_pad / 2, 2*t_pad + gap
 
-K, 11, a - l_pad / 2, t + t_pad + gap
-K, 12, a - l_pad / 2, t + 2*t_pad + gap
-K, 13, a + l_pad / 2, t + 2*t_pad + gap
-K, 14, a + l_pad / 2, t + t_pad + gap
+K, 11, a - l_pad / 2, t_pad
+K, 12, a - l_pad / 2, 0
+K, 13, a + l_pad / 2, 0
+K, 14, a + l_pad / 2, t_pad
 
 
 !surfaces
@@ -80,3 +80,5 @@ VOFFST,k,w !Creates the volume by extrusion in the thicknedd direction
 *ENDDO
 
 NUMMRG,KP,1e-9,1e-9	!merge the coincident keypoints that were created with the VOFFST command
+
+FINISH
