@@ -182,11 +182,21 @@ The designs that we analysed had the actuation force placed close enough to the 
 \subsubsection{Optimizations}
 \label{ssub:optimizations}
 
+Our goals were:
 
+\begin{itemize}
+    \item Short response time
+    \item Low activation voltage
+    \item Small footprint
+\end{itemize}
 
+There are some obvious trade-offs like that switching will always be faster with a higher voltage applied to the actuator.
+When you look at equation (\ref{eq:switching_time_optimization}) you can see that the switching time actually converges when the activation voltage becomes infinity.
+So, one could argue that once the total switching time reached a certain percentage of the minimal value, it is inefficient to increase the voltage further.
+But with the order of magnitude of our proposed dimensions, this would be in the \SI{}{\kilo\volt} (as opposed to the \SI{10}{\volt} which were imposed as limit).
 
-- Actuation point vs contact point placement
-- Area contact
-- Area actuator
-- Beam cross section
-- Material
+On the other hand, a small footprint has a positive influence of the response time, because the footprint scales with the square of the length, while the mass scales with the cube, and response time depends on the ratio between mass and length.
+
+The chose the actual shape of the beam by looking at how the spring constant changes.
+The Appendix~\ref{appendix} talks at length about how to chose the optimal $k$.
+There exists an optimum, but we can't calculate it analytically.
