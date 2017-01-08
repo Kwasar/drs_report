@@ -13,35 +13,49 @@ w_air=50e-6
 V=1
 
 !Silicon
-CTE=2.6e-6	!coefficient of thermal expansion for Silicon (1/K)
-Y=169e9		!Young Modulus of Si (We consider istotropic properties)
-nu=0.36		!Poisson coefficient
-rho=9E-4	!Resistivity (Ohm*m) of Boron-doped silicon for 1E19 at/cm^3
-kth=149		!thermal conductivity (W/m/K)
+CTE_si=2.6e-6	!coefficient of thermal expansion for Silicon (1/K)
+Y_si=186e9		!Young Modulus of Si (We consider istotropic properties)
+nu_si=0.36		!Poisson coefficient
+rho_si=3.2e7	!Resistivity (Ohm*m)
+eps_si=11.9
 
 !Air
 Y_air=1e-3	!to avoid mesh collapse problems
 nu_air=0.1	
-kth_air=0.024	!Thermal Conductivity
 rho_air=1E9		!very large electrical resistance for air
+eps_air=1
+
+!Gold
+Y_au=79e9		!Young Modulus of Si (We consider istotropic properties)
+nu_au=0.4		!Poisson coefficient
+rho_au=2.3e-8	!Resistivity (Ohm*m)
+eps_au=1e13
+
 
 /COM --- Geometry and elements
 /PREP7
 ET,1,SOLID226,1001	!3-D 20-Node Coupled-Field Solid. Switch on DOF disp and electro static
 
+EMUNIT,EPZRO,8.854e-12
 
-!Material Properties for the beam
-MP,EX,1,Y		!Apply Young's modulus
-MP,PRXY,1,nu	!Apply Poisson ratio
-MP,ALPX,1,CTE		!Apply Coefficient of Thermal Expansion
-MP,RSVX,1,rho		!Apply resistivity
-MP,KXX,1,kth
+!Material Properties for Si
+MP,EX,1,Y_si		!Apply Young's modulus
+MP,PRXY,1,nu_si	!Apply Poisson ratio
+MP,ALPX,1,CTE_si		!Apply Coefficient of Thermal Expansion
+MP,RSVX,1,rho_si		!Apply resistivity
+MP,PERX,2,eps_si
 
 !Material Properties for the air
 MP,EX,2,Y_air
 MP,PRXY,2,nu_air
-MP,KXX,2,kth_air
 MP,RSVX,2,rho_air
+MP,PERX,2,eps_air
+
+!Material Properties for gold
+MP,EX,3,Y_au
+MP,PRXY,3,nu_au
+MP,RSVX,3,rho_au
+MP,PERX,3,eps_au
 
 
 !The geometry is split into rectangles so that Mapped meshing can be used.
@@ -107,13 +121,13 @@ VMESH,ALL
 VSEL,S,LOC,Z,w/2
 VSEL,R,LOC,Y, t_pad/2
 VSEL,R,LOC,X, a
-VATT,1	!Material 3 (gold)
+VATT,3	!Material 3 (gold)
 VMESH,ALL
 
 VSEL,S,LOC,Z,w/2
 VSEL,R,LOC,Y, gap + t_pad + t_pad/2
 VSEL,R,LOC,X, a
-VATT,1	!Material 3 (gold)
+VATT,3	!Material 3 (gold)
 VMESH,ALL
 
 
