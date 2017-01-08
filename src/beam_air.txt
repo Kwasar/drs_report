@@ -75,10 +75,10 @@ K, 09, a + l_pad / 2, t_pad + gap
 K, 10, a + l_pad / 2, 2*t_pad + gap
 
 !bottom pad
-!K, 11, a - l_pad / 2, t_pad
-!K, 12, a - l_pad / 2, 0
-!K, 13, a + l_pad / 2, 0
-!K, 14, a + l_pad / 2, t_pad
+K, 11, a - l_pad / 2, t_pad
+K, 12, a - l_pad / 2, 0
+K, 13, a + l_pad / 2, 0
+K, 14, a + l_pad / 2, t_pad
 
 K, 15, a + l_pad / 2, t + gap + 2*t_pad
 K, 16, a - l_pad / 2, t + gap + 2*t_pad
