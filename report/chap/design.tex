@@ -117,7 +117,6 @@ If we choose a value for $a$ more or less close to $l$, we can just use $33/140m
 
 
 \subsubsection{Electrostatic force}
-Note: Distance smaller than surface, neglect fringes because of aspect ratio
 Equation (\ref{eq:electrostatic_force}) gives the electrostatic force between two metal plates.
 One notes that this is neglecting any \emph{fringe effects}.
 We can do that when the distance between the plates is much smaller than the side lengths of the plates.
@@ -157,8 +156,35 @@ With $R$ being the resistance of the circuit charging the capacitor.
 
 We neglect any thin-film effects and there are no currents expected to be high enough to heat the mechanism up to a point where it starts to matter.
 
+
 \subsection{Analysis}
 \label{sec:analysis}
+
+\subsubsection{Simplifications}
+\label{ssub:simplifications}
+We identified some things which we could simplify for our analysis:
+
+\paragraph{Fringe effects}
+The aspect ratio of our actuator makes it so that the fringe effects are negligible for our electrostatic actuation force.
+
+\paragraph{Actuator capacitance}
+In case of the proposed dimensions, the capacitance of the actuator is in the order of pico Farads, which results in cut-off frequencies of more than \SI{1}{\tera\hertz\ohm}.
+It's impossible that this frequency would ever be a limiting factor of the switch.
+
+\paragraph{Switch resistance}
+With the constraint of \SI{10}{\ohm} of resistance of our switch, we can say that the aspect ratio of the actuation pad has to be better than $43$ (i.e.\ not more than $43$ times longer than wide) when we use a \SI{100}{\nano\meter} thick gold pad.
+This should be easily fulfilled with any kind of design that we could come up with.
+
+\paragraph{Effective mass}
+The designs that we analysed had the actuation force placed close enough to the free end of the beam so that we could use the simplified expression of the effective mass which supposes the force to be at the very end.
+
+
+\subsubsection{Optimizations}
+\label{ssub:optimizations}
+
+
+
+
 - Actuation point vs contact point placement
 - Area contact
 - Area actuator
