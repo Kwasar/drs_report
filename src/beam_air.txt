@@ -92,12 +92,12 @@ A,15,10,06,04
 
 ! gold pads
 A,07,08,09,10
-!A,11,12,13,14
 
 ! air inside
 A,05,02,12,07
 A,08,11,14,09
 A,10,13,03,06
+A,11,12,13,14		! prior gold, now air
 
 A,01,02,03,04 ! air on the side
 
@@ -130,7 +130,7 @@ VMESH,ALL
 VSEL,S,LOC,Z,w/2
 VSEL,R,LOC,Y, t_pad/2
 VSEL,R,LOC,X, a
-VATT,2	!Material 1 (air)
+VATT,2	!Material 1 (ai)
 VMESH,ALL
 
 VSEL,S,LOC,Z,w/2
