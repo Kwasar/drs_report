@@ -7,7 +7,7 @@
 \label{sec:basic_concepts}
 Area moment of inertia of recangular section:
 \begin{equation}
-	I_z = \frac{bh^3}{12}
+	I_z = \frac{wt^3}{12}
 	\label{eq:area_moment_of_inertia}
 \end{equation}
 
@@ -19,13 +19,13 @@ Deflection of a beam:
 \end{figure}
 
 \begin{equation}
-	\delta = \frac{F}{3EI}\cdot\frac{a^3(1+3b)}{2a}
+	\delta_{max} = \frac{Fa^2}{6EI_z}\cdot(3l-a)
 	\label{eq:beam_deflection}
 \end{equation}
 
 Effective mass:
 \begin{equation}
-	m_{eff} = \rho A \int_0^l{\left[\frac{y(x)}{y(l)_{max}}\right]^2dx}
+	m_{eff} = \rho A \int_0^l{\left[\frac{\delta(x)}{\delta(l)_{max}}\right]^2dx} = \rho wt\frac{6l^2-4al+a^2}{12l-4a}
 	\label{eq:effective_mass}
 \end{equation}
 
@@ -33,7 +33,7 @@ Effective mass:
 - Frequency response / Minimal switching
 Spring constant:
 \begin{equation}
-	k = \frac{F}{\delta} = \frac{Ewt^3}{4L^3}
+	k = \frac{F}{\delta} = \frac{6EI_z}{a^2(3l-a)}
 	\label{eq:spring_constant}
 \end{equation}
 

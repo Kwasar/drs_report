@@ -1,3 +1,50 @@
 \section{Introduction}
 \label{sec:introduction}
+Today, field-effect transistors and PIN diodes are the dominant components used as micro-switches. 
+They are very reliable and are very well understood and modelled. 
+The vide variety of applications for these switches induces a need of better performances; the main parameters being low power consumption, high isolation properties, low insertion loss\footnote{The loss of a power signal caused by entering a device.}, a fast response time and a small footprint.
+New technology needs to be explored to further improve the performance of micro-switches.
 
+One such technology is represented by resistive switches, also called mechanical relays.
+Their main advantages lying in lower power consumption, higher isolation properties and a wide operation frequency band, from DC to tens of GHz, compared to conventional micro-switches.
+Their working principle is based on performing a mechanical movement to connect or disconnect contact pads to allow or stop current flow.
+The challenges lie in designing a flexible structure that guides the contacts to connect, to find an actuation principle that is both fast and low in power consumption, and to chose a contact material that enables good electrical contact and high resistance against it's mechanical use.
+
+This report focuses on the study of a very simple design to allow trade-offs that are mainly focused on a fast response time, a minimum actuation voltage and a minimum footprint.
+The mechanical design is based on a cantilever.
+It's design will be explained in more detail in the following chapter (chap. \ref{sec:resisitive_switch_design}).\cite{shaw2012mems}
+
+\subsection{Contact}
+\label{sec:contact}
+Optimized contact pads have serious constraints on geometry, materials, contact force and release force. 
+Due to the small scope of this project the contact pads were not further studied and were defined as being of a simple rectangular shape.
+The material was chosen to be gold for it's good electric and mechanical properties. 
+
+A choice was made between two designs.
+The first possibility was to use a cantilever with a single contact point, so that the current would flow through the cantilever itself. %image
+The second possibility was to use a cantilever with a simple golden surface, that would connect two fixed contact points to one another. %image
+The second design was chosen to guarantee a small lenght of the contact element and therefore to reduce it's resistance and power consumption.
+Also the mechanical properties of the cantilever don't get influenced that heavily by the second choice and therefore enables the design, of all but the tip of the cantilever, to focus on the actuation and guidance functionality of the structure.
+The disadvantage of this design choice is a minimum required width, which is given by the resolution of the fabrication process of two non-connected pads.
+
+\subsection{Actuation}
+\label{sec:actuation}
+There are four different actuation principles which can be used for a mechanical micro-switch design:
+\begin{itemize}
+  \item Electrostatic
+  \item Piezoelectric
+  \item Electromagnetic
+  \item Thermal
+\end{itemize}
+
+Thermal actuators are not fast enough for micro-switch applications. 
+Also they have the highest power consumption of all the methods.
+
+Electromagnetic actuators require either a permanent magnetic material or an electromagnet design to work.
+The material choices are therefore very difficult and also the footprint would be rather big compared to the other methods.
+
+Piezoelectric actuators represent the method with the lowest power consumption.
+But compared to electrostatic actuators they are way more complex to fabricate and material choices represent a huge challenge.\cite{klaasse2002piezoelectric}
+
+Therefore our choice fell on an electrostatic actuator.
+They are very simple from a fabrication point of view, allow low power consumption and offer a fast actuation time.
