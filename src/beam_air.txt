@@ -8,7 +8,7 @@ w=50e-6			! beam width
 t=20e-6 		! beam thickness
 l_pad=40e-6		! pad length
 t_pad=5e-6 		! pad thickness
-gap=200e-9      ! air gap
+gap=20e-6      ! air gap
 w_air=50e-6
 V=1
 
@@ -84,24 +84,24 @@ K, 14, a - l_pad / 2, t + gap + t_pad
 
 !surfaces
 ! beam
-A,01,05,07,14
-A,14,07,10,13
-A,13,10,06,04
+A,01,05,07,14		!A1
+A,14,07,10,13 		!A2
+A,13,10,06,04 		!A3
 
 ! gold pads
-A,07,08,09,10
+A,07,08,09,10 		!A4
 
 ! air inside
-A,05,02,12,07
-A,08,11,12,09
-A,10,12,03,06
+A,05,02,12,07		!A5
+A,08,11,12,09 		!A6
+A,10,12,03,06 		!A7
 !A,11,12,13,14		! prior gold, now air
 
-A,01,02,03,04 ! air on the side
+!A,01,02,03,04 ! air on the side
 
 
 !Creates the volume by extrusion in the thicknedd direction
-*DO,k,1,8,1
+*DO,k,1,7,1
 VOFFST,k,w !Creates the volume by extrusion in the thicknedd direction
 *ENDDO
 
