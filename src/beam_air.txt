@@ -8,7 +8,7 @@ w=50e-6			! beam width
 t=20e-6 		! beam thickness
 l_pad=40e-6		! pad length
 t_pad=5e-6 		! pad thickness
-gap=20e-6      ! air gap
+gap=200e-9      ! air gap
 w_air=50e-6
 V=1
 
@@ -97,7 +97,7 @@ A,08,11,12,09 		!A6
 A,10,12,03,06 		!A7
 !A,11,12,13,14		! prior gold, now air
 
-!A,01,02,03,04 ! air on the side
+!A,01,02,03,04 		! air on the side
 
 
 !Creates the volume by extrusion in the thicknedd direction
@@ -119,7 +119,7 @@ VMESH,ALL
 
 !airgap to air
 VSEL,S,LOC,Z,w/2
-VSEL,R,LOC,Y, gap/2
+VSEL,R,LOC,Y,gap/2
 VATT,2	!Material 2 (air)
 VMESH,ALL
 
@@ -129,15 +129,15 @@ VMESH,ALL
 !VMESH,ALL
 
 !VSEL,S,LOC,Z,w/2
-!VSEL,R,LOC,Y, t_pad/2
-!VSEL,R,LOC,X, a
-!VATT,2	!Material 1 (ai)
+!VSEL,R,LOC,Y,t_pad/2
+!VSEL,R,LOC,X,a
+!VATT,2	!Material 1 (air)
 !VMESH,ALL
 
 !pad to gold
 VSEL,S,LOC,Z,w/2
-VSEL,R,LOC,Y, gap + t_pad/2
-VSEL,R,LOC,X, a
+VSEL,R,LOC,Y,gap + t_pad/2
+VSEL,R,LOC,X,a
 VATT,3	!Material 3 (gold)
 VMESH,ALL
 
