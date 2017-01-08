@@ -2,11 +2,11 @@ FINISH
 /CLEAR
 /TITLE, Beam and some air
 /COM ---- Parameters
-l=200e-6		! beam length
-a=170e-6		! pad position
-w=50e-6			! beam width
-t=40e-6 		! beam thickness
-l_pad=20e-6		! pad length
+l=75e-6		! beam length
+a=50e-6		! pad position
+w=40e-6			! beam width
+t=20e-6 		! beam thickness
+l_pad=40e-6		! pad length
 t_pad=200e-9 		! pad thickness
 gap=1e-6      ! air gap
 w_air=50e-6
