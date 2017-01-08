@@ -8,7 +8,7 @@ w=50e-6			! beam width
 t=20e-6 		! beam thickness
 l_pad=40e-6		! pad length
 t_pad=5e-6 		! pad thickness
-gap=200e-9      ! air gap
+gap=20e-6      ! air gap
 w_air=50e-6
 V=1
 
