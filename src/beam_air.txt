@@ -64,18 +64,21 @@ K, 02, 0, 0
 K, 03, l, 0
 K, 04, l, t + gap + 2*t_pad
 
+!bottom beam
 K, 05, 0, 2*t_pad + gap
 K, 06, l, 2*t_pad + gap
 
+!top pad
 K, 07, a - l_pad / 2, 2*t_pad + gap
 K, 08, a - l_pad / 2, t_pad + gap
 K, 09, a + l_pad / 2, t_pad + gap
 K, 10, a + l_pad / 2, 2*t_pad + gap
 
-K, 11, a - l_pad / 2, t_pad
-K, 12, a - l_pad / 2, 0
-K, 13, a + l_pad / 2, 0
-K, 14, a + l_pad / 2, t_pad
+!bottom pad
+!K, 11, a - l_pad / 2, t_pad
+!K, 12, a - l_pad / 2, 0
+!K, 13, a + l_pad / 2, 0
+!K, 14, a + l_pad / 2, t_pad
 
 K, 15, a + l_pad / 2, t + gap + 2*t_pad
 K, 16, a - l_pad / 2, t + gap + 2*t_pad
@@ -89,7 +92,7 @@ A,15,10,06,04
 
 ! gold pads
 A,07,08,09,10
-A,11,12,13,14
+!A,11,12,13,14
 
 ! air inside
 A,05,02,12,07
@@ -124,11 +127,11 @@ VMESH,ALL
 !VATT,2	!Material 2 (air)
 !VMESH,ALL
 
-VSEL,S,LOC,Z,w/2
-VSEL,R,LOC,Y, t_pad/2
-VSEL,R,LOC,X, a
-VATT,3	!Material 3 (gold)
-VMESH,ALL
+!VSEL,S,LOC,Z,w/2
+!VSEL,R,LOC,Y, t_pad/2
+!VSEL,R,LOC,X, a
+!VATT,3	!Material 3 (gold)
+!VMESH,ALL
 
 VSEL,S,LOC,Z,w/2
 VSEL,R,LOC,Y, gap + t_pad + t_pad/2
