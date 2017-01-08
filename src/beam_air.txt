@@ -87,13 +87,20 @@ VOFFST,7,-w_air
 
 NUMMRG,KP,1e-9,1e-9	!merge the coincident keypoints that were created with the VOFFST command
 
-ESIZE,t
-
-VATT,2	!Material 2 (air)
+ESIZE,t_pad
 
 VSEL,S,LOC,Z,w/2
 VSEL,R,LOC,Y, 2*t_pad + gap + t/2
 VATT,1	!Material 1 (silicon)
+VMESH,ALL
+
+VSEL,S,LOC,Z,w/2
+VSEL,R,LOC,Y, t_pad + gap/2
+VATT,2	!Material 2 (air)
+VMESH,ALL
+
+VSEL,S,LOC,Z,-w_air/2
+VATT,2	!Material 2 (air)
 VMESH,ALL
 
 ALLSEL,ALL
