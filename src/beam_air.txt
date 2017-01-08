@@ -10,6 +10,7 @@ l_pad=40e-6
 t_pad=0.1e-6
 gap=0.4e-6
 w_air=50e-6
+V=1
 
 !Silicon
 CTE=2.6e-6	!coefficient of thermal expansion for Silicon (1/K)
@@ -117,5 +118,28 @@ VMESH,ALL
 
 
 ALLSEL,ALL
+
+/COM --- Loads and Boundary conditions
+
+ASEL,S,LOC,X,0		!Select the areas a X=0
+DA,ALL,UX,0			!Lock all displacement on those areas (anchor)
+DA,ALL,UY,0
+DA,ALL,UZ,0
+
+ASEL,S,LOC,Y,0		!Select the areas a Y=0
+DA,ALL,UX,0			!Lock all displacement on those areas (anchor)
+DA,ALL,UY,0
+DA,ALL,UZ,0
+
+! set ground pad to 0V
+ASEL,S,LOC,Y,t_pad	
+DA,ALL,VOLT,0
+
+! set acutator pad to V
+ASEL,S,LOC,Y, gap + t_pad	
+DA,ALL,VOLT,V
+
+ALLSEL,ALL			!Reselects all
+
 
 FINISH
