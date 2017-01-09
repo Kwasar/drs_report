@@ -11,11 +11,28 @@ Due to the small scope of this project the contact pads were not further studied
 The material was chosen to be gold for it's good electric and mechanical properties. 
 
 A choice was made between two designs.
-The first possibility was to use a cantilever with a single contact point, so that the current would flow through the cantilever itself. %image
-The second possibility was to use a cantilever with a simple golden surface, that would connect two fixed contact points to one another. %image
+The first possibility was to use a cantilever with a single contact point, so that the current would flow through the cantilever itself (see fig. \ref{fig:cantilever_connect_through}). %image
+The second possibility was to use a cantilever with a simple golden surface, that would connect two fixed contact points to one another (see fig. \ref{fig:cantilever_connect_pad}). %image
 The second design was chosen to guarantee a small lenght of the contact element and therefore to reduce it's resistance and power consumption.
 Also the mechanical properties of the cantilever don't get influenced that heavily by the second choice and therefore enables the design, of all but the tip of the cantilever, to focus on the actuation and guidance functionality of the structure.
 The disadvantage of this design choice is a minimum required width, which is given by the resolution of the fabrication process of two non-connected pads.
+
+\begin{figure}[h]
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.8\linewidth]{fig/cant_double_front.jpg}
+  \caption{Cantilever connecting two contact pads with a pad at the tip.}
+  \label{fig:cantilever_connect_pad}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.8\linewidth]{fig/cant_single_front.jpg}
+  \caption{Cantilever connecting a pad through it's structure.}
+  \label{fig:cantilever_connect_through}
+\end{subfigure}
+\caption{Front view of two different cantilever contact design approaches.}
+\label{fig:cantilever_2_designs}
+\end{figure}
 
 \subsection{Actuation}
 \label{sec:actuation}
@@ -58,13 +75,13 @@ With the area moment of inertia defined as such:
 	\label{eq:area_moment_of_inertia}
 \end{equation}
 
-and the distance $a$ like it is shown in Figure~\ref{fig:cantilever_beam}.
+and the distance $a$ like it is shown in Figure 2.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{fig/cantilever_beam_single_load.png}
     \caption{Clamped beam with a single load.}
-\label{fig:cantilever_beam}
+	\label{fig:cantilever_beam}
 \end{figure}
 
 \subsubsection{Resonance frequency}
