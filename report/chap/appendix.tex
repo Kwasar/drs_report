@@ -20,7 +20,7 @@ So we solve equation (\ref{eq:diff_equation_lin}) to finally get a conservative 
     \label{eq:diff_equation_lin}
 \end{equation}
 
-Using the \emph{Laplace method} we get the solution $x(t) = \frac{F}{k}\left[1-\cos{\left(\sqrt{\frac{k}{m}}t\right)}\right]$, which we can solve for $t$ to get (\ref{eq:switching_time}), which yields an estimation of the time it takes for the beam to go from its resting position the \emph{on} position.
+Using the \emph{Laplace method} we get the solution $x(t) = \frac{F}{k}\left[1-\cos{\left(\sqrt{\frac{k}{m}}t\right)}\right]$, which we can solve for $t$ to get (\ref{eq:switching_time}), which yields an estimation of the time it takes for the beam to go from its resting position to the \emph{on} position.
 
 \begin{equation}
     t_{on} = \sqrt{\frac{m*}{k}} \cos^{-1}{\left( 1 - \frac{k x_{gap}}{F_{ES}} \right)} 
@@ -31,7 +31,7 @@ The equation (\ref{eq:switching_time}) is only defined for $k x_{gap} < F_{ES}$,
 In the valid range of $0 < k < F_{ES}/x_{gap}$, the minimal switching time lies at $k = 0$.
 
 So, a minimal spring constant $k$ would be favorable for a fast response time.
-However, can't apply a force that pushed the cantilever back to its initial position, thus we'd like a high \emph{resonance frequency} to get a fast response time when switching \emph{off}.
+However, we can't apply a force that pushes the cantilever back to its initial position, thus we'd like a high \emph{resonance frequency} to get a fast response time when switching \emph{off}.
 The resonance frequency requires a high spring constant for it to be high (equation~\ref{eq:resonance_frequency}).
 There's a trade-off between the switching times in either directions for an optimal over-all switching frequency, which we can pose as an optimization problem (\ref{eq:switching_time_optimization}).
 
