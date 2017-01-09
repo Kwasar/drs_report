@@ -1,0 +1,182 @@
+FINISH
+/CLEAR
+/TITLE, Beam and some air
+/COM ---- Parameters
+l=75e-6		! beam length
+a=50e-6		! pad position
+w=40e-6			! beam width
+t=20e-6 		! beam thickness
+l_pad=40e-6		! pad length
+t_pad=200e-9 		! pad thickness
+gap=1e-6      ! air gap
+w_air=50e-6
+V=1E-2
+
+!Silicon
+CTE_si=2.6e-6	!coefficient of thermal expansion for Silicon (1/K)
+Y_si=186e9		!Young Modulus of Si (We consider istotropic properties)
+nu_si=0.36		!Poisson coefficient
+rho_si=3.2e7	!Resistivity (Ohm*m)
+eps_si=11.9
+
+!Air
+Y_air=1e-3		!to avoid mesh collapse problems
+nu_air=0.1	
+rho_air=1E9		!very large electrical resistance for air
+eps_air=1
+
+!Gold
+Y_au=79e9		!Young Modulus of Si (We consider istotropic properties)
+nu_au=0.4		!Poisson coefficient
+rho_au=2.3e-8	!Resistivity (Ohm*m)
+eps_au=1e13
+
+
+/COM --- Geometry and elements
+/PREP7
+ET,1,SOLID226,1001	!3-D 20-Node Coupled-Field Solid. Switch on DOF disp and electro static
+
+EMUNIT,MKS
+
+!Material Properties for Si
+MP,EX,1,Y_si			!Apply Young's modulus
+MP,PRXY,1,nu_si			!Apply Poisson ratio
+MP,ALPX,1,CTE_si		!Apply Coefficient of Thermal Expansion
+MP,RSVX,1,rho_si		!Apply resistivity
+MP,PERX,1,eps_si
+
+!Material Properties for the air
+MP,EX,2,Y_air
+MP,PRXY,2,nu_air
+MP,RSVX,2,rho_air
+MP,PERX,2,eps_air
+
+!Material Properties for gold
+MP,EX,3,Y_au
+MP,PRXY,3,nu_au
+MP,RSVX,3,rho_au
+MP,PERX,3,eps_au
+
+
+!The geometry is split into rectangles so that Mapped meshing can be used.
+K, 01, 0, t + gap + t_pad			!Define keypoints 
+K, 02, 0, 0
+K, 03, l, 0
+K, 04, l, t + gap + t_pad
+
+!bottom beam
+K, 05, 0, t_pad + gap
+K, 06, l, t_pad + gap
+
+!top pad
+K, 07, a - l_pad / 2, t_pad + gap
+K, 08, a - l_pad / 2, gap
+K, 09, a + l_pad / 2, gap
+K, 10, a + l_pad / 2, t_pad + gap
+
+!bottom pad
+K, 11, a - l_pad / 2, 0
+K, 12, a + l_pad / 2, 0
+
+K, 13, a + l_pad / 2, t + gap + t_pad
+K, 14, a - l_pad / 2, t + gap + t_pad
+
+
+!surfaces
+! beam
+A,01,05,07,14		!A1
+A,14,07,10,13 		!A2
+A,13,10,06,04 		!A3
+
+! gold pads
+A,07,08,09,10 		!A4
+
+! air inside
+A,05,02,12,07		!A5
+A,08,11,12,09 		!A6
+A,10,12,03,06 		!A7
+!A,11,12,13,14		! prior gold, now air
+
+!A,01,02,03,04 ! air on the side
+
+
+!Creates the volume by extrusion in the thicknedd direction
+*DO,k,1,7,1
+VOFFST,k,w !Creates the volume by extrusion in the thicknedd direction
+*ENDDO
+
+!VOFFST,9,-w_air
+
+NUMMRG,KP,1e-9,1e-9	!merge the coincident keypoints that were created with the VOFFST command
+
+ESIZE,,5
+
+!beam to silicon
+VSEL,S,LOC,Z,w/2
+VSEL,R,LOC,Y, t_pad + gap + t/2
+VATT,1	!Material 1 (silicon)
+VMESH,ALL
+
+!airgap to air
+VSEL,S,LOC,Z,w/2
+VSEL,R,LOC,Y, gap/2
+VATT,2	!Material 2 (air)
+VMESH,ALL
+
+!thickness to air
+!VSEL,S,LOC,Z,-w_air/2
+!VATT,2	!Material 2 (air)
+!VMESH,ALL
+
+!VSEL,S,LOC,Z,w/2
+!VSEL,R,LOC,Y, t_pad/2
+!VSEL,R,LOC,X, a
+!VATT,2	!Material 1 (ai)
+!VMESH,ALL
+
+!pad to gold
+VSEL,S,LOC,Z,w/2
+VSEL,R,LOC,Y, gap + t_pad/2
+VSEL,R,LOC,X, a
+VATT,3	!Material 3 (gold)
+VMESH,ALL
+
+
+ALLSEL,ALL
+
+/COM --- Loads and Boundary conditions
+
+ASEL,S,LOC,X,0		!Select the areas a X=0
+DA,ALL,UX,0			!Lock all displacement on those areas (anchor)
+DA,ALL,UY,0
+DA,ALL,UZ,0
+DA,ALL,VOLT,0
+
+ASEL,S,LOC,Y,0		!Select the areas a Y=0
+DA,ALL,UX,0			!Lock all displacement on those areas (anchor)
+DA,ALL,UY,0
+DA,ALL,UZ,0
+
+! set ground pad to 0V
+ASEL,S,LOC,Y,0
+DA,ALL,VOLT,0
+
+! set acutator pad to V
+ASEL,S,LOC,Y,gap
+DA,ALL,VOLT,V
+
+ALLSEL,ALL			!Reselects all
+FINISH
+!/EOF
+/SOLU
+ANTYPE,STATIC
+CNVTOL,f,1,1.e-6     ! Define convergence tolerances
+!nlgeom,on           ! Large deflection analysis
+NSUBST,5,20,2
+SOLVE
+FINISH
+
+/POST1
+/CONTOUR,ALL,128
+/dscale,all,1
+PLNSOL, U,Y, 2,1.0	!plot the displacement along y

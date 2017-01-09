@@ -108,6 +108,7 @@ We can do that when the distance between the plates is much smaller than the sid
 \end{equation}
 
 \subsubsection{Switch resistance}
+The resistance of the contact which closes the switch depends on thickness of the metal plating and \emph{aspect ratio} of it's shape, as well as the plated material's resistivity.
 \begin{equation}
 	R = \rho_{el}\frac{l}{wt}
 	\label{eq:resistance}
@@ -171,7 +172,8 @@ Our goals were:
     \item Small footprint
 \end{itemize}
 
-There are some obvious trade-offs like that switching will always be faster with a higher voltage applied to the actuator.
+There are some obvious trade-offs like that switching will always be faster with a higher Force applied to the actuator.
+This calls for an as high as possible activation voltage and the smallest possible \emph{air gap}.
 When you look at equation (\ref{eq:switching_time_optimization}) you can see that the switching time actually converges when the activation voltage becomes infinity.
 So, one could argue that once the total switching time reached a certain percentage of the minimal value, it is inefficient to increase the voltage further.
 But with the order of magnitude of our proposed dimensions, this would be in the \SI{}{\kilo\volt} (as opposed to the \SI{10}{\volt} which were imposed as limit).
@@ -182,9 +184,50 @@ The chose the actual shape of the beam by looking at how the spring constant cha
 The Appendix~\ref{appendix} talks at length about how to chose the optimal $k$.
 There exists an optimum, but we can't calculate it analytically.
 
+\subsubsection{Proposed dimensions}
+\label{ssub:proposed_dimensions}
+
+Doing the above mentioned simplifications, optimizations, and trade-offs, we came to propose a cantilever as shown in Figure~\ref{fig:cantilever_design} with silicon as the structural material and gold for the contact pads (Table~\ref{tab:silicium_mat}~\&~\ref{tab:gold_mat} contain their properties).
+With an activation voltage of \SI{10}{\volt} we reach switching frequencies of dozens of \SI{}{\mega\hertz} with contact forces of dozens of \SI{}{\milli\newton}.
+
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=12cm]{fig/cant_design.jpg}
     \caption{Cantilever design with dimensions.}
 \label{fig:cantilever_design}
 \end{figure}
+
+\begin{table}
+	\centering
+	\begin{tabular}{l l r l} 
+		\toprule
+		Property & symbol & Value & Unit \\
+		\midrule
+		Density & $\rho$ & 2.329 & $g/cm^3$ \\
+		Young's Modulus & E & 186.5 & GPa \\ 
+		Poisson's Ratio & $\upsilon$ & 0.25 & - \\ 
+		Dielectic Constant & $\epsilon_r$ & 11.9 & - \\
+		Resistivity & $\rho_{el}$ & $3.2\cdot10^5 $ & $\Omega \cdot cm$ \\
+		\bottomrule
+	\end{tabular}
+	\caption{Material properties of [111] silicon}
+	\label{tab:silicium_mat}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l l r l} 
+		\toprule
+		Property & symbol & Value & Unit \\
+		\midrule
+		Density & $\rho$ & 19.30 & $g/cm^3$ \\
+		Young's Modulus & E & 79 & GPa \\ 
+		Poisson's Ratio & $\upsilon$ & 0.4 & - \\ 
+		Dielectic Constant & $\epsilon_r$ & 6.9 & - \\
+		Resistivity & $\rho_{el}$ & $22.14\cdot10^{-9} $ & $\Omega \cdot cm$ \\
+		\bottomrule
+	\end{tabular}
+	\caption{Material properties of Gold}
+	\label{tab:gold_mat}
+\end{table}
