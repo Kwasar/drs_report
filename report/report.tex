@@ -17,6 +17,8 @@
 \usepackage[toc,page]{appendix}
 \usepackage{subcaption}
 
+\graphicspath{ {fig/} }
+
 \setlength{\parindent}{0pt}
 
 \begin{document}
@@ -24,9 +26,13 @@
 \pagenumbering{roman}
 
 \input{chap/titlepage}
-\clearpage%\null\newpage
+\clearpage\null\newpage
 
 \tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
 \newpage
 %\null\newpage
 
@@ -34,7 +40,7 @@
 \setcounter{page}{1}
 
 \input{chap/intro} \newpage
-\input{chap/design} \newpage
+\input{chap/electronic_design} \newpage
 \input{chap/conclusion} \newpage
 
 \newpage
