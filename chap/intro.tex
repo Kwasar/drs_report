@@ -1,18 +1,18 @@
 \section{Introduction}
 \label{sec:introduction}
-The goal of this project is to propose a first version of electronics and logic design to readout a directional radiation sensor (see sec. \ref{sec:radiation_sensor}) using an ASIC (Application Specific Integrated Circuit) (see \cite{Meier2016VATA466}).
+The goal of this project is to propose a first version of electronics and logic design to readout a DRS (directional radiation sensor) (see sec. \ref{sec:radiation_sensor}) using an ASIC (Application Specific Integrated Circuit) (see \cite{Meier2016VATA466}).
 A non-negligible part of the work was the gathering and exchange of information between PSI and eSpace.
 The following report should serve as a good basis for a final design of the sensor interface and also provides more precise data on a systems level.
 
 \subsection{Mission Overview: Tantalum Project}
 \label{sec:mission_overview}
-The directional radiation sensor is part of a cubesat mission placed in GTO (Geostationary Transfer Orbit).
+The DRS is part of a cubesat mission placed in GTO (Geostationary Transfer Orbit).
 The scientific goal is to gather more precise data about the radiation environment in the Van Allen belts and it's impact on the lifetime of a satellite.
 
 The following scientific instruments will be implemented in the 3U or 6U cubesat:\cite{tantalumproject2016}
 \begin{itemize}
 	\item EDSS and SDSS (RUAG)
-	\item Directional Radiation Sensor (PSI)
+	\item DRS (PSI)
 	\item Solar Cell Experiment (AZUR SPACE)
 \end{itemize}
 
@@ -27,7 +27,7 @@ The environment a spacecraft encounters during operations is composed of four ph
 	\item Particulate Environment
 \end{itemize}
 
-Only the radiation environment is explained further in this report, since it has a major impact on the directional radiation sensor and it's electronics.
+Only the radiation environment is explained further in this report, since it has a major impact on the DRS and it's electronics.
 It's effects and modulation is also the main purpose of this mission.
 
 \subsubsection{Radiation Environment}
@@ -39,7 +39,7 @@ The corpuscular radiation environment consists of the ambient flux of particles 
 
 The Tantalum Project will mainly focus on the study of the ambient flux of particles.
 RUAG's system will measure the quantity of electrons with their EDSS (Electron Detector Subsystem) and the quantity of protons, and heavy ions with their SDSS (Stacked Detector Subsystem).
-The directional radiation sensor from PSI will mainly concentrate on the electrons and their directionality.\footnote{This is due to the fact that protons and heavy ions have larger energy densities then electrons and therefore usually need multiple stacked detectors to be detected.}
+The DRS from PSI will mainly concentrate on the electrons and their directionality.\footnote{This is due to the fact that protons and heavy ions have larger energy densities then electrons and therefore usually need multiple stacked detectors to be detected.}
 The solar cell experiment from AZUR SPACE will study the degradation effect of the radiation environment on different types of solar cells.
 
 \subsubsection{Van Allen Belts}
@@ -71,7 +71,7 @@ Since the amount of energy needed to create electron-hole pairs is only dependen
     \label{fig:detector_diode}
 \end{figure}
 
-The sensor from PSI (see fig. \ref{fig:detector_die}) is a PIPS (Passivated Implanted Planar Silicon) detector.\footnote{The sensor is similar to the one used in the RADEM instrument of the JUICE mission.}
+The DRS from PSI (see fig. \ref{fig:detector_die}) is a PIPS (Passivated Implanted Planar Silicon) detector.\footnote{The sensor is similar to the one used in the RADEM instrument of ESA's JUICE mission. It has an expected noise level of 10-20mV, as mentioned in one of the discussions with PSI.}
 It consists of 31 reverse biased diodes (PN junctions), meaning that their anode should be set to 80V and their cathode to GND.
 A copper, dome-shaped stencil (see fig. \ref{fig:detector_stencil}) is used to shield most of the detector from radiation.
 Holes in the stencil will enable radiation to fall onto the detector diodes, which are shaped in a way that the wholes project on an equal surface.\footnote{Hence the tear shape of the outer diodes and the round shape of the center diode.}
