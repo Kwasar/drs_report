@@ -19,7 +19,6 @@ Size and power considerations mainly have to be traded-off against signal qualit
 
 It is important to stay in the boundaries given by the data sheet of the ASIC to ensure a correct functioning of the instrument.
 
-
 \subsection{VATA466 Baseboard}
 \label{sec:vata466_baseboard}
 The schematic ``VATA466\_Base\_Board.SchDoc'' includes all the basic building blocks of the electronic design and therefore resembles largely to the block diagram and description in sec. \ref{sec:electronic_design}.
@@ -86,7 +85,6 @@ A SEL would make the diode conducting and there would be a voltage drop between 
 This voltage is compared to the threshold value (SELTHR).
 Being above it, the corresponding LU pin is set to high and therefore the GLU pin will go to high as well and indicate a latch-up detection.\cite[p. 66-68, fig. 12]{Meier2016VATA466}
 
-
 \subsection{High Voltage Supply}
 \label{sec:hv_supply}
 A high voltage supply is needed to induce the reverse bias on the DRS's diodes.
@@ -98,7 +96,6 @@ To adjust the high voltage output, an 12 bit DAC (Digital Analog Converter) with
 The zero scale reset is important to prevent uncontrolled voltage spikes on power-on and therefore make the system initialization consistent and repeatable.
 The DAC produces an output voltage of 0-2.5V which is proportional to the high voltage output of the supply of 0-100V.
 A serial $I^2C$ interface is used to operate the DAC.
-
 
 \subsection{Directional Sensor}
 \label{sec:directionality Sensor}
@@ -124,15 +121,53 @@ The guard rings are rings of reverse biased diodes.
 They will define the outer edge of the depletion region of the large anode and the sensors.
 This is implemented to avoid leakage currents from the outside of the detector.
 
-
 \subsection{Supply Voltages}
 \label{sec:power_supplies}
-- trade-off housekeeping
+A collection of supply voltages needs to be provided to the ASIC as well as the FPGA.
+The ASIC (see tab. \ref{tab:asic_supply}) has pretty strict requirements on it's analog voltages (see sec. \ref{sec:analog_supply}).
+The FPGA (see tab. \ref{tab:fpga_supply}) on the other hand has some larger requirements and it will possible to share one of the voltages with the digital supply (see sec. \ref{sec:digital_supply}) of the ASIC.
+\begin{table}[H]
+	\centering
+    \includegraphics[width=0.4\textwidth]{asic_supply_voltages.jpg}
+    \caption[ASIC Supply Voltages]{Requirements on the supply voltages for the ASIC.\cite[p. 82, tab. 44]{Meier2016VATA466}}
+	\label{tab:asic_supply}
+\end{table}
+\begin{table}[H]
+	\centering
+    \includegraphics[width=0.6\textwidth]{fpga_supply_voltages.jpg}
+    \caption[FPGA Supply Voltages]{Requirements on the supply voltages for the FPGA.\cite[p. 2-2, tab. 2-2]{microsemi2014military}}
+	\label{tab:fpga_supply}
+\end{table}
+
+A trade-off had to be done between circuit area, power consumption and the amount of housekeeping data.
+As can be seen in the ``BB\_Power.SchDoc'', it was decided that there will be one point of current, voltage and temperature measurement (U16 \& U17\footnote{MAX9611}) in front of both the digital power block and the analog power block.
 
 \subsubsection{Analog Supply Voltages}
 \label{sec:analog_supply}
-- 1.8 V, 3.3 V
-- digital vs opto copplers
+The analog supply voltage block is isolated from any logic noise and is represented in the schematic ``Analog\_Power.SchDoc''.
+The AVDD and CVDD share a common 3.3V power supply, as allowed by the data sheet.
+A 1.8V power supply is used for AVREF.
+There is also a shunt regulator which provides sink capability for the CVREF pin.
+
+Both power supplies use a LDO (U1 \& U6\footnote{LT3042}) to create the required voltages from a 5V input.
+They have very low noise ($0.8 \mu V_{RMS}$) and a programmable current limit, which can protect the ASIC in case of SELs.
+The output voltage can be set by a resistor to GND at the SET pin using the formula $V_{SET} = I_{SET}\cdot R_{SET}$.
+This results in a $33k\Omega$ resistor for the 3.3V supply and a $18k\Omega$ resistor for the 1.8V supply.
+The current limit was set to 200 mA, using $I_{LIM} = \frac{125mA}{R_{LIM}}$ we find a required resistor of $620\Omega$.
+
+The power supplies also use a digital isolator (U3 \& U5\footnote{ADUM1100}) to drive enable or disable the voltage, without inducing noise into the output.
+A digital coupling was chosen over an optical coupling because it is more resistant to radiation and harsh environments.
+
+A shunt regulator (U7\footnote{TLHV431}) is used to provide sink capability to the CVREF pin while keeping it at around 1.8V.
+Schematic ``CVREF\_Sink.SchDoc'' shows it's design.
+Using the formula $V_O = (1+\frac{6.2k\Omega}{15k\Omega})V_{REF}$ results in an output voltage of 1.75V.
+
+\subsubsection{Digital Supply Voltages}
+\label{sec:digital_supply}
+The digital supply voltages in schematic ``Digital\_Power.SchDoc'' provide systems with power which are not critically affected by noise coming from any logic components.
+Both the ASIC and the FPGA need a supply voltage of 3.3V, which is directly sourced from the satellites power bus, filtered and then shared between them.
+The 1.5V for the FPGA is created by using a LDO (U4\footnote{LT1963}).
+
 
 \subsection{Bias Current}
 \label{sec:bias_current}
@@ -199,17 +234,14 @@ Therefore we use C21 to pull the positive entry of the op-amp above the negative
 
 The remaining part of the circuit is a digital coupler (U12\footnote{ADUM1100}) that controls a FET (Field Effect Transistor) (Q2\footnote{BSS138}) which switches the current source on or off.
 
-
 \subsection{Analog Digital Converter}
 \label{sec:adc}
-
 
 \subsection{FPGA}
 \label{sec:FPGA}
 The ``FPGA.SchDoc'' schematic defines a basic layout of an FPGA\footnote{A3P1000-FG144M} drive circuit.
 J1\footnote{Connector: 3020-10-0300-00} provides a standard interface for programming the FPGA's logic.
 The IO pins of the IO banks are not yet defined, since they depend largely on the logic design.
-
 
 \subsection{Interface CubeSat}
 \label{sec:interface_cubesat}
