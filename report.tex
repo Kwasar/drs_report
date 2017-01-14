@@ -28,20 +28,16 @@
 %\clearpage\null\newpage
 
 \pagenumbering{roman}
-\tableofcontents
-\newpage
-\listoffigures
-\newpage
-\listoftables
-\newpage
-%\null\newpage
-
+\input{chap/abstract} \newpage
 \input{chap/acknowledgements} \newpage
+\tableofcontents\newpage
+\listoffigures\newpage
+\listoftables\newpage
+\input{chap/abbreviations} \newpage
+%\null\newpage
 
 \pagenumbering{arabic}
 \setcounter{page}{1}
-
-\input{chap/abstract} \newpage
 \input{chap/intro} \newpage
 \input{chap/electronic_design} \newpage
 \input{chap/logic_design} \newpage
