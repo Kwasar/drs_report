@@ -1,13 +1,13 @@
 \section{Introduction}
 \label{sec:introduction}
 
-The goal of this project is to propose the concepts and a first version of the analogue electronics and a digital readout design to interface with and acquire measurement data from a directional radiation sensor (see sec. \ref{sec:radiation_sensor}) using an ASIC (Application Specific Integrated Circuit) (see \cite{Meier2016VATA466}).
+The goal of this project is to propose the concepts and a first version of the analog electronics and a digital readout design to interface with and acquire measurement data from a directional radiation sensor (see sec. \ref{sec:radiation_sensor}) using an ASIC (Application Specific Integrated Circuit) (see \cite{Meier2016VATA466}).
 A non-negligible part of the work was the gathering and exchange of information between PSI and eSpace.
-The following report should serve as a good basis for a final design of the sensor interface and also provides more precise data on a systems level.
+The following report should serve as a good basis for a final design of the sensor interface and also provides more precise data on a system level.
 
 \subsection{Mission Overview: Tantalum Project}
 \label{sec:mission_overview}
-The DRS is part of a cubesat mission placed in GTO (Geostationary Transfer Orbit).
+The DRS (Directional Radiation Sensor) will be part of a cubesat mission placed in GTO (Geostationary Transfer Orbit).
 The scientific goal is to gather more precise data about the radiation environment in the Van Allen belts and it's impact on the lifetime of a satellite.
 
 The following scientific instruments will be implemented in the 3U or 6U cubesat:\cite{tantalumproject2016}
@@ -16,6 +16,9 @@ The following scientific instruments will be implemented in the 3U or 6U cubesat
 	\item DRS (PSI)
 	\item Solar Cell Experiment (AZUR SPACE)
 \end{itemize}
+
+The missions outcome will enable commercial and scientific satellites to better protect their hardware while passing through the radiation belts.
+It will allow for a wider use of new, more efficient, but lower thrust propulsion technologies, like electric propulsion.
 
 \subsection{Space Environment}
 \label{sec:space_environment}
@@ -65,7 +68,7 @@ Since the amount of energy needed to create electron-hole pairs is only dependen
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{detector_diode.png}
+    \includegraphics[width=0.85\textwidth]{detector_diode.png}
     \caption[Schematic Detector Diode]{Schematic plot of a single detector diode.\cite{am2016semiconductor}}
     \label{fig:detector_diode}
 \end{figure}
@@ -73,7 +76,7 @@ Since the amount of energy needed to create electron-hole pairs is only dependen
 The DRS from PSI (see fig. \ref{fig:detector_die}) is a PIPS (Passivated Implanted Planar Silicon) detector.\footnote{The sensor is similar to the one used in the RADEM instrument of ESA's JUICE mission. It has an expected noise level of 10-20mV, as mentioned in one of the discussions with PSI.}
 It consists of 31 reverse biased diodes (PN junctions), meaning that their anode should be set to 80V and their cathode to GND.
 A copper, dome-shaped stencil (see fig. \ref{fig:detector_stencil}) is used to shield most of the detector from radiation.
-Holes in the stencil will enable radiation to fall onto the detector diodes, which are shaped in a way that the wholes project on an equal surface.\footnote{Hence the tear shape of the outer diodes and the round shape of the center diode.}
+Holes in the stencil will enable radiation to fall onto the detector diodes, which are shaped in a way that the wholes project on an equal detector surface.\footnote{Hence the tear shape of the outer diodes and the round shape of the center diode.}
 The whole circular area around the diodes are used as a large anode, it's purpose is to smoothen the electric field lines in the detector junctions and around them.
 This is to avoid noise from charges created outside of the detectors and therefore inside the large anode, which are collected and removed using a capacitance.
 Guard rings are placed around the large anode, they protect the detectors from leakage current.
@@ -81,7 +84,7 @@ The back of the die is connected to a large ground pad, while the detectors, lar
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{detector_die.jpg}
+    \includegraphics[width=0.7\textwidth]{detector_die.jpg}
     \caption[PSI Detector Die]{Picture of the PSI detector die.}
     \label{fig:detector_die}
 \end{figure}
