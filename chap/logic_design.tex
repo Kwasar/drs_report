@@ -204,7 +204,7 @@ The FPGA-to-computer responses are in the following configuration:
 
 \begin{table}[H]
 
-\caption[]{FPGA-to-comuter response constellation}
+\caption[]{FPGA-to-computer response constellation}
     \label{tab:5}
     
   \begin{center}  
@@ -239,11 +239,166 @@ To write data to an ASIC register via the SPI-port, the following sequences must
 \end{center}
 \end{table}
 
+\begin{table}[H]
+
+\caption[]{Write ASIC register command 2/2}
+    \label{tab:7}
+    
+  \begin{center}  
+  \begin{tabular}{|c|p{1.5cm}|p{0.7cm}|p{1cm}|p{1cm}|p{1cm}|p{2cm}|p{2cm}|}
+  \hline
+  \textbf{Bit indices}  & 39 to 36  & 35 & 34 & 33 to 22 & 21 to 10 & 9 & 8 to 0\\ 
+  \hline
+  \textbf{Values} & 0001  & 0 & 0 & 0x009 & Meaningless, set to 0 & R/W bit, set to 1 & SPI register address \\
+  \hline
+  
+\end{tabular}
+\end{center}
+\end{table}
+
+To read data from an ASIC register via the SPI-port, the following sequences must be sent via the UART port:
+
+\begin{table}[H]
+
+\caption[]{Read ASIC register command 1/2}
+    \label{tab:8}
+    
+  \begin{center}  
+  \begin{tabular}{|c|p{1.5cm}|p{0.7cm}|p{1cm}|p{1cm}|p{1cm}|p{2cm}|p{2cm}|}
+  \hline
+  \textbf{Bit indices}  & 39 to 36  & 35 & 34 & 33 to 22 & 21 to 10 & 9 & 8 to 0\\ 
+  \hline
+  \textbf{Values} & 0001  & 0 & 0 & 0x009 & Meaningless, set to 0 & R/W bit, set to 0 & SPI register address \\
+  \hline
+  
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+
+\caption[]{Read ASIC register command 2/2}
+    \label{tab:8}
+    
+  \begin{center}  
+  \begin{tabular}{|c|p{1.5cm}|p{0.7cm}|p{1cm}|p{1cm}|p{3cm}|}
+  \hline
+  \textbf{Bit indices}  & 39 to 36  & 35 & 34 & 33 to 22 & 21 to 0 \\ 
+  \hline
+  \textbf{Values} & 0000  & 0 & 0 & 0x00D & Meaningless, set to 0  \\
+  \hline
+  
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{System Description}
+In this chapter, the individual blocks of the VHDL design are documented in detail.
+
+\subsubsection{UART UI (User Interface)}
+This component is responsible for several tasks. First, it converts the serial one line UART RX input into a parallel data line. At the same time, it is responsible for sending a desired output given as parallel register content via the serial UART TX port. For this reason, the sub-block Core UART is employed in this component. It is a native soft core, which means that it is synthesizable pre-written hardware that can be instantiated several times. This softcore is available on the SmartFusion2 as well as the ProASIC3 FPGAs. The core can receive one byte at a time via the serial UART RX port in the following fashion:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.89\textwidth]{UART_serial_rx.jpg}
+    \caption[]{UART serial receive (\cite{UART}) }
+    \label{fig:UART_serial_rx}
+\end{figure}
+
+Likewise, one byte at a time can be sent by putting the data at the DATA\_IN port of the Core and setting the WEN (write enable) to active low for at least one clock cycle
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.89\textwidth]{UART_serial_TX.jpg}
+    \caption[]{UART serial transmit (\cite{UART}) }
+    \label{fig:UART_serial_TX}
+\end{figure}
+The Core is operating with the following UART parameters:
 
 
+\begin{table}[H]
+
+\caption[]{UART Core specifications}
+    \label{tab:9}
+    
+  \begin{center}  
+  \begin{tabular}{|r|l|}
+  \hline
+  \textbf{Parameter}  & \textbf{Value} \\ \cline{1-2}
+  
+  \textbf{Clock rate} & 20 MHz \\
+  \textbf{Baud Rate [Hz]} & 460800\\ 
+  \textbf{Baud Rate Adjust} & +0.712 \\
+  \textbf{Bit Width} & 8\\
+  \textbf{Active Chip Select} & Low \\
+  \textbf{Enable Parity} & Yes \\
+  \textbf{Parity Type} & Odd \\
+  \hline
+  
+\end{tabular}
+\end{center}
+\end{table}
 
 
+However, this is not everything that has to be done, since one command consists of 40 bits a total of 5 bytes need to be sent through the UART port. The UART UI therefore needs to keep track of how many bytes have already been received and re-construct the 40 bit-word by assembling 5 bytes together. Afterwards, the command data and command address must be separated and stored in their designated data lines to be processed by the System Controller, which is one hierarchy stage above the UART UI.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.89\textwidth]{UART_SIMULATE.jpg}
+    \caption[]{UART Interface Test Bench and Simulation) }
+    \label{fig:UART_SIMULATE}
+\end{figure}
+
+In the wave diagram above, the r\_RX\_SERIAL port depicts the UART input, that is instructed to serially send data to be received by the UART UI. The 40-bit word is successfully re-constructed and stored in the w\_RECEIVE register and via the r\_SEND signal, the serial UART transmit operation can be initiated and the result can be observed on the w\_TX\_SERIAL data line.
+\subsubsection{System Controller}
+The system controller is the main part of the command processing unit. It deciphers the instructions and controls the data flow accordingly. If instructed to read or write ASIC registers, it is responsible for the delivering of the command data as well as the command address to the ASIC Controller, which is the component that initiates the communication with the ASIC. Furthermore, after each successfully received instruction, the system controller builds the appropriate response and sends it automatically back to the computer via the serial UART transmit port. If instructed to read memory, one command is enough to either read or write a memory address specified in the command address portion of the instruction and immediately send back the data in the memory address to the computer. Due to its relative complexity, a diagram of its state machine has been created.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.89\textwidth]{SYSCO_StateMachine.jpg}
+    \caption[]{State machine of the system controller) }
+    \label{fig:SYSCO}
+\end{figure}
+Another testbench has been written to simulate the System Controller design.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{SYSCO_Simulate.jpg}
+    \caption[]{Simulation of the System Controller }
+    \label{fig:SYSCO_Sim}
+\end{figure}
+
+In this example, like the one described for the UART UI, an instruction is sent through the r\_RX\_SERIAL port, the System Controller parses the input and stores the command address and command data in w\_CMD\_ADDR and w\_CMD\_DATA\_IN respectively. It also interprets the command as a write command to the ASIC and therefore sets the w\_EXECUTE\_CMD for the ASIC Controller to 1 for one cycle.
+
+\subsubsection{ASIC Controller and SPI-Master}
+The ASIC Controller is the second of two main components for the command and communication processing. It is mainly responsible for initiation communication with the ASIC by establishing a link using the SPI protocol. An illustration of its state machine has been created. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.89\textwidth]{ASIC_Controller_STATEMACHINE.jpg}
+    \caption[]{ASIC Controller State Machine}
+    \label{fig:ASIC_CON_STATE}
+\end{figure}
+
+After the System Controller has parsed the input, it will either send an impulse on the EXECUTE\_PROCESS or the READ\_REGISTER line, the former defines the data or the address of the registers of the ASIC that should be read or written through the CMD\_ADDR and CMD\_DATA\_IN registers.
+
+One hierarchy stage below, the SPI Control Unit is affiliated in the design. The SPI Control Unit is in turn one stage above the SPI-Master and is mainly responsible for implementing system resets for the SPI port that are sent from anywhere in the command processing unit, it can overwrite the SPI clock and the data lines if a reset is requested. Its state machine diagram can be found below. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{SPI_control.jpg}
+    \caption[]{SPI Control Unit State machine, clock domains and non-sequential logic part}
+    \label{fig:ASIC_SPI_STATE}
+\end{figure}
+
+And finally, the SPI Master is added one stage below whose outputs and inputs are directly connected to the digital hardware interface of the ASIC. The SPI master combines the SPI-Address the Read/Write Mask bit and the SPI-Data to a 32-bit register which is serially transmitted over the SPI interface if the ASIC Controller initiates an SPI transaction. The state machine of the SPI-Master is depicted in the figure below.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{SPI_master.jpg}
+    \caption[]{SPI-Master State Machine}
+    \label{fig:SPI_master}
+\end{figure}
 
 
 
