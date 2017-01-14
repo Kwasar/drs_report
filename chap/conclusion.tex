@@ -5,13 +5,22 @@ The vast information gathered should help a future student to quickly catch on t
 The next important step in development is the exact system engineering level decision on a data bus architecture inside the cubesat.
 A PCB would need to be produced to test the DRS's readout electronics, during this process more profound trade-offs would need to be done considering the footprint of the components.
 %TODO For the logic part blabla, do more shit, blablabla
+\newline 
+
+The digital design serves as a solid base for further work, which includes but is not limited to developing appropriate software that sends the commands to the FPGA according to the missions requirements. It is recommended that a program will run on the on-board computer that can enter a default periodic read-out mode that just scans through all of the Coincidence Sub-Unit counters and saves its results either on the FPGA memory or sends it to earth.
+
+It is recommended to expose the program on a physical FPGA chip to long tests and evaluate performance, either with the ASIC or the provided ASIC emulator. 
+
+Data rates and digital resources need to be re-evaluated every time the design is updated and expanded. This statement is valid for the inclusion of a SMA mode and the control of the analogue power switches that supply the ASIC.
+\newline
+
 
 We learned a lot of interesting and new concepts during this project.
 It also let us experience the difficulties in the design of a payload instrument.
-Numerous parameters have to be traded off and the many interdependencies with other subsystems and organizations made this task a fascinating challenge.
+Numerous parameters have to be traded off and the many inter-dependencies with other subsystems and organizations made this task a fascinating challenge.
+\newline
 
 The Tantalum mission aims to study a still unknown world just outside of the Earth's atmosphere.
 It's potential outcome would have a huge impact on commercial, as well as scientific satellites and would enable a wider use of new propulsion technology, like electric propulsion.
 We hope that this contribution will bring the project a step closer to realization and launch.
 
-%Data rates and digital resources need to be re-evaluated every time the design is updated and expanded.
