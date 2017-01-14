@@ -400,6 +400,32 @@ And finally, the SPI Master is added one stage below whose outputs and inputs ar
     \label{fig:SPI_master}
 \end{figure}
 
+The hardware instantiation in the Libero software without the ASIC emulator is depicted in the figure below.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Design_Instantiate.jpg}
+    \caption[]{Hardware Block-Diagram of Readout design, instantiation in Libero SoC}
+    \label{fig:Instantiate}
+\end{figure}
+
+\subsection{ASIC emulator}
+The price for the IDE3466 ASIC is beyond what was affordable and due to that unfortunate test, there was no physical device to be tested in the scope of this projects. To test the programmed hardware and to expand the read-out electronic design in a future project, the hardware code for an emulation of a simplified ASIC was developed. It implements an SPI-slave that can conduct a full-duplex communication with the SPI-Master and the rest of the read-out design. 
+\newline 
+
+The counter registers of the coincidence sub-unit were implemented using a ROM architecture. The register addresses for the counters match the ones specified in the ASIC data sheet. This allows the commands to be in the same configuration as in the real case. 
+\newline
+
+Its state machine of the SPI slave is very like the one of the Master with the exception that its data output is only meaningful as soon as the register address has completely been read by the emulator. On the other hand, it is possible to specify the address that should be read and receive its content within the same transaction. 
 
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Simulation_design.jpg}
+    \caption[]{Simulation of the design}
+    \label{fig:Simulation}
+\end{figure}
 
+The simulation above depicts the behavior of the architecture when an ASIC register is read. As soon as the first command is sent through the UART port, the instruction is deciphered and the SPI-protocol begins, the ASIC emulator on the hardware interface is selected and the signals w\_SPI\_CLK and w\_SMOSI are used for specifying the address in the ASIC. The emulator uses internally a shift register whose value can be observed in w\_COUNTER\_ADDRESS. Towards the end of the process, one the SMISO line, the value of the specified register is sent back to the readout design and stored in w\_CMD\_DATA\_OUT, which is directly connected to the UART UI, which sends it to the computer via the w\_TX\_SERIAl port in the configuration specified in (see sec. \ref{sec:hardwaredesign}).
+
+\subsection{Implementation on FPGA}
