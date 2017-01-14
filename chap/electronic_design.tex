@@ -1,6 +1,6 @@
 \section{Readout Electronic Design}
 \label{sec:electronic_design}
-The design of the readout electronics depends mainly on the directionality radiation sensor (see sec. \ref{sec:radiation_sensor}) and the ASIC VATA466 (see \cite{Meier2016VATA466}) architecture and drive requirements.
+The design of the readout electronics depends mainly on the directional radiation sensor (see sec. \ref{sec:radiation_sensor}) and the ASIC VATA466 (see \cite{Meier2016VATA466}) architecture and drive requirements.
 The sensor needs a high voltage supply (see sec. \ref{sec:hv_supply}) to create a reverse bias, the ASIC (see sec. \ref{sec:vata466_baseboard}) is used to readout the sensor data.
 The ASIC itself demands some stable supply voltages (see sec. \ref{sec:power_supplies}) and a bias current (see sec. \ref{sec:bias_current}).
 To have access to the spectroscopic mode for configuration purposes an ADC (Analog Digital Converter) is needed (see sec. \ref{sec:adc}).
@@ -16,9 +16,7 @@ The block diagram in fig. \ref{fig:electronic_block_diagram} shows the relations
 The design has to be optimized in terms of power consumption, size and radiation hardness. 
 For the latter it was discussed with PSI that the final design could be tested for it's radiation resistance and therefore much cheaper and not officially radiation hardened components can be chosen.
 Size and power considerations mainly have to be traded-off against signal quality.
-% * <kosheira@gmail.com> 2017-01-13T18:48:56.397Z:
-%
-% ^.
+
 It is important to stay in the boundaries given by the data sheet of the ASIC to ensure a correct functioning of the instrument.
 
 
@@ -30,38 +28,38 @@ A power bus distributes the correct voltages to the specific systems.
 
 \subsubsection{ASIC: VATA466}
 \label{sec:asic}
-In the schematic ``VATA466.SchDoc'' the ASIC is divided into his functional subparts.
+In the schematic ``VATA466.SchDoc'' the ASIC is divided into his functional sub parts.
 Figure \ref{fig:signals_pads} shows a schematic representation of the ASIC's functions and pins.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{signals_pads_chip.jpg}
-    \caption[Signals and Chip Pad Frame]{Schematic overview of subparts and pins of the ASIC.\cite[p. 14, fig. 3]{Meier2016VATA466}}
+    \caption[Signals and Chip Pad Frame]{Schematic overview of sub parts and pins of the ASIC.\cite[p. 14, fig. 3]{Meier2016VATA466}}
     \label{fig:signals_pads}
 \end{figure}
 
 There are 36 CSA (charge sensitive pre-amplifiers), called U19A in the schematics, 4 of them have a low gain and 32 a high gain.
 The DRS has 31 detector diodes and therefore uses 31 inputs of the high gain channels.
 
-The ASIC also contains two power subparts, an analogue one (U19B) and a digital one (U19C).
+The ASIC also contains two power sub parts, an analogue one (U19B) and a digital one (U19C).
 They differ in that the analogue input voltages have strict requirements and need to have low noise since they are going to interact directly with the signals in the ASIC.
 The digital input voltage is only used for the logic in the ASIC and is therefore less critical.
 These inputs should be strictly isolated to avoid any degradation of the measurements.
 The supply voltages will be discussed in more detail in section \ref{sec:power_supplies}.
 
-The next subunit of the ASIC holds all his bias and test-pads (U19D).
+The next sub unit of the ASIC holds all his bias and test-pads (U19D).
 The bias network will be described in more detail in section \ref{sec:bias_current}.
 The test-pads can be used to debug the ASIC and to directly readout some of it's internal signals.
 The following table describes the pins purposes and gives recommendations for external decoupling:
 \begin{table}[H]
 	\centering
     \includegraphics[width=0.7\textwidth]{test-pins.jpg}
-    \caption[Test-pins Purpose and External Decoupling]{Purposes of the different test-pins and recoomendations for external decoupling.\cite[p. 65-66, tab. 31]{Meier2016VATA466}}
+    \caption[Test-pins Purpose and External Decoupling]{Purposes of the different test-pins and recommendations for external decoupling.\cite[p. 65-66, tab. 31]{Meier2016VATA466}}
 	\label{tab:test-pads}
 \end{table}
 
-The last subpart of the ASIC regroups all pins used for the readout and commands (U19E).
+The last sub part of the ASIC regroups all pins used for the readout and commands (U19E).
 It uses SPI (Serial Peripheral Interface) to read or write over the ASIC's registers and thereby enables the use of the counting mode.
-A calibration subunit can be used to test and calibrate the gain in the pre-amplifier, slow shapers and trigger the increment of a counter in a channel.
+A calibration sub unit can be used to test and calibrate the gain in the pre-amplifier, slow shapers and trigger the increment of a counter in a channel.
 The power down block is used to power down the 4 low gain channels (1 to 4) and\/or 16 high gain channels (21 to 36), channels 5 to 20 are always powered on.
 A single analogue output is provided through the AVO pin, which allows the readout of the pulse heights from all channels via multiplexing (see sec. \ref{sec:adc}).
 The multiplexer is controlled through the A\&D channel readout block and is therefore used to setup the spectroscopic mode of the ASIC.
@@ -102,7 +100,7 @@ The DAC produces an output voltage of 0-2.5V which is proportional to the high v
 A serial $I^2C$ interface is used to operate the DAC.
 
 
-\subsection{Directionality Sensor}
+\subsection{Directional Sensor}
 \label{sec:directionality Sensor}
 As explained in section \ref{sec:radiation_sensor}, the DRS is composed of 31 sensing diodes, a large anode and guard rings.
 
@@ -209,7 +207,7 @@ The remaining part of the circuit is a digital coupler (U12\footnote{ADUM1100}) 
 \subsection{FPGA}
 \label{sec:FPGA}
 The ``FPGA.SchDoc'' schematic defines a basic layout of an FPGA\footnote{A3P1000-FG144M} drive circuit.
-J1\footnote{Connector: 3020-10-0300-00} provides a standard interface for programing the FPGA's logic.
+J1\footnote{Connector: 3020-10-0300-00} provides a standard interface for programming the FPGA's logic.
 The IO pins of the IO banks are not yet defined, since they depend largely on the logic design.
 
 
@@ -219,4 +217,4 @@ The interface to the cubesat is not defined in much detail yet.
 The proposed readout electronics assume a power bus that provides 3.3V and 5V.
 As of now there is no data bus defined.
 The size of the FPGA allows for a quick implementation and adaption to most common variants like the CAN bus.
-A programing interface is provided in the FPGA schematics.
+A programming interface is provided in the FPGA schematics.
