@@ -52,10 +52,10 @@ The next subunit of the ASIC holds all his bias and test-pads (U19D).
 The bias network will be described in more detail in section \ref{sec:bias_current}.
 The test-pads can be used to debug the ASIC and to directly readout some of it's internal signals.
 The following table describes the pins purposes and gives recommendations for external decoupling:
-\begin{table}[h!]
+\begin{table}[H]
 	\centering
     \includegraphics[width=0.7\textwidth]{test-pins.jpg}
-    \caption[Test-pins Purpose and External Decoupling]{Purposes of the different test-pins and recoomendations for external decoupling.\cite[p. 65, tab. 31]{Meier2016VATA466}}
+    \caption[Test-pins Purpose and External Decoupling]{Purposes of the different test-pins and recoomendations for external decoupling.\cite[p. 65-66, tab. 31]{Meier2016VATA466}}
 	\label{tab:test-pads}
 \end{table}
 
@@ -138,6 +138,68 @@ This is implemented to avoid leakage currents from the outside of the detector.
 
 \subsection{Bias Current}
 \label{sec:bias_current}
+In order for the ASIC to generate all internal bias currents and bias voltages, one external current source called MBIAS is needed.
+The maximum operation voltage of the device is given to be 3.6V, therefore the current source shall not exceed this voltage.
+Further requirements of the current source are described in the following table:\cite[p. 64-65]{Meier2016VATA466}
+\begin{table}[H]
+	\centering
+    \includegraphics[width=0.6\textwidth]{mbias.jpg}
+    \caption[MBIAS Parameters]{Requirements on MBIAS current source.\cite[p. 65, tab. 30]{Meier2016VATA466}}
+	\label{tab:mbias}
+\end{table}
+
+\subsubsection{Current Source Variations}
+\label{sec:current_source}
+A \textbf{Zener diode current source} (see fig. \ref{fig:zener_current_source}) is one of the most simple forms.
+It uses the fact that a reverse biased Zener diode has a constant voltage ($V_Z$) drop across it, irrespective of the current ($I_Z$) flowing through it.
+The resistor R1 is used to induce a current above the holding current in the Zener diode.
+The voltage over R2 is given by $V_{R2} = V_Z - V_{BE}$, where $V_{BE}$ is the base-emitter voltage of Q1.
+This gives us the current in the load, which is the same as the emitter current of Q1 and the current in R2 ($I_{R2}$) and is given by $I_{Load} = I_E = I_{R2} = \frac{V_{R2}}{R2} = \frac{V_Z-V_{BE}}{R2}$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{zener_current_source.png}
+    \caption[Zener Current Source]{A basic Zener diode current source.\cite{wikipedia2016current}}
+    \label{fig:zener_current_source}
+\end{figure}
+
+An \textbf{op-amp current source} (see fig. \ref{fig:op-amp_current_source}) can be used to improve the circuit explained above.
+The principle is the same as above, with the difference that a feedback loop is created by adding an op-amp.
+It actively keeps up the constant voltage ($V_Z$), defined by the Zener diode, over the sense resistor ($R_{sense}$).
+Therefore the current through the load is constant and defined as $I_{Load} = I_{sense} = \frac{V_Z}{R_{sense}}$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{op-amp_current_source.png}
+    \caption[Op-amp Current Source]{Op-amp current source.\cite{wikipedia2016current}}
+    \label{fig:op-amp_current_source}
+\end{figure}
+
+\subsubsection{MBIAS Design}
+\label{sec:mbias_design}
+The schematic ``MBIAS.SchDoc'' represents a more complex approach based on a basic op-amp current source (see fig. \ref{fig:mbias_op-amp_source}).
+The Zener diode (D33\footnote{LT1634}) with a reverse bias of $V_Z = 1.25V$ is kept above the holding current by the current $I_Z = I_{R45} = \frac{V_D-V_Z}{R45} = \frac{1.5-1.25}{24k\Omega}$ created in R45, with $V_D = 1.5V$ being the drive voltage.
+The op-amp (U12B\footnote{LTC6078}) uses $V_Z$ to keep a constant voltage drop of 0.25V over the two resistors R2 and R3, they are connected in series and together fulfill the function of $R_{sense}$ from above.
+The transistor Q1 drives the current $I_{MBIAS} = \frac{0.25V}{R2+R3} = \frac{0.25V}{825\Omega+8.2\Omega}$ to the MBIAS pin.
+The maximal output voltage is limited to $V_{max} = V_Z = 1.25V$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{mbias_op-amp_source.jpg}
+    \caption[MBIAS Op-amp Current Source]{MBIAS op-amp current source.}
+    \label{fig:mbias_op-amp_source}
+\end{figure}
+
+Another advantage of this design is it's drive voltage that is internally created by the second half of the circuit (see fig. \ref{fig:mbias_power_supply}) and is therefore independent of a possibly unstable external power supply.
+The same Zener diode as above (D33), with a reverse bias of $V_Z = 1.25V$, is used as a reference for the drive voltage $V_D = 1.5V$.
+The resistors R34 and R35 define the gain of the op-amp (U12A) as $g = \frac{R2}{R1}+1 = 1.2$, which results in a drive voltage of $V_D = g\cdot V_Z = 1.5V$.
+For this circuit to work the differential input voltage has to be positive, which is not necessarily the case during power-up.
+Therefore we use C21 to pull the positive entry of the op-amp above the negative one.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{mbias_power_supply.jpg}
+    \caption[MBIAS Voltage Generation]{Internal and passive Voltage generation for MBIAS.}
+    \label{fig:mbias_power_supply}
+\end{figure}
+
+The remaining part of the circuit is a digital coupler (U12\footnote{ADUM1100}) that controls a FET (Field Effect Transistor) (Q2\footnote{BSS138}) which switches the current source on or off.
 
 
 \subsection{Analog Digital Converter}
