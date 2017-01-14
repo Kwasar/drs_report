@@ -238,7 +238,7 @@ The remaining part of the circuit is a digital coupler (U12\footnote{ADUM1100}) 
 \label{sec:adc}
 Schematic ``ADC.SchDoc'' shows an ADC design that can both be used to readout AVO in spectroscopic mode and to monitor the calibration voltage on CMON.
 It uses a 12 bit differential input ADC (U15\footnote{AD7452}) with 555 ksps (Kilosamples per Second).
-A high accuracy voltage reference (U14\footnote{ADR4533}) is used to provide V_{REF} to the ADC.
+A high accuracy voltage reference (U14\footnote{ADR4533}) is used to provide $V_{REF}$ to the ADC.
 One of the differential inputs can be connected to AVO or CMON respectively.
 The second input shall be connected to GND in close proximity to the respective measurement pin, so that the resistance of the lines don't influence the measurement.
 The ADC is connected to the FPGA using SPI.
