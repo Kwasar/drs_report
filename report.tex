@@ -23,11 +23,11 @@
 
 \begin{document}
 
-\pagenumbering{roman}
-
 \input{chap/titlepage}
-\clearpage\null\newpage
+%\pagenumbering{gobble}
+%\clearpage\null\newpage
 
+\pagenumbering{roman}
 \tableofcontents
 \newpage
 \listoffigures
@@ -35,6 +35,8 @@
 \listoftables
 \newpage
 %\null\newpage
+
+\input{chap/acknowledgements} \newpage
 
 \pagenumbering{arabic}
 \setcounter{page}{1}
