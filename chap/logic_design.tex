@@ -426,6 +426,15 @@ Its state machine of the SPI slave is very like the one of the Master with the e
     \label{fig:Simulation}
 \end{figure}
 
-The simulation above depicts the behavior of the architecture when an ASIC register is read. As soon as the first command is sent through the UART port, the instruction is deciphered and the SPI-protocol begins, the ASIC emulator on the hardware interface is selected and the signals w\_SPI\_CLK and w\_SMOSI are used for specifying the address in the ASIC. The emulator uses internally a shift register whose value can be observed in w\_COUNTER\_ADDRESS. Towards the end of the process, one the SMISO line, the value of the specified register is sent back to the readout design and stored in w\_CMD\_DATA\_OUT, which is directly connected to the UART UI, which sends it to the computer via the w\_TX\_SERIAl port in the configuration specified in (see sec. \ref{sec:hardwaredesign}).
+The simulation above depicts the behavior of the architecture when an ASIC register is read. As soon as the first command is sent through the UART port, the instruction is deciphered and the SPI-protocol begins, the ASIC emulator on the hardware interface is selected and the signals w\_SPI\_CLK and w\_SMOSI are used for specifying the address in the ASIC. The emulator internally uses a shift register whose value can be observed in w\_COUNTER\_ADDRESS. Towards the end of the process, on the SMISO line, the value of the specified register is sent back to the readout design and stored in w\_CMD\_DATA\_OUT, which is directly connected to the UART UI, which sends it to the computer via the w\_TX\_SERIAl port in the configuration specified in (see sec. \ref{sec:hardwaredesign}).
 
 \subsection{Implementation on FPGA}
+The design was tested on the Microsemi SmartFusion2 M2S050 FPGA using the Starter Kit development board.
+\newline
+
+The SmartFusion2 M2S050 also includes a Microcontroller Subsystem (MCSS) on its chip, which is not in use however, due to the lower radiation tolerance of software components compared to the fabric hardware.
+\newline
+
+For the actual read-out board, a different FPGA has been considered a superior choice over the SmartFusion2 device. The ProASIC3 A3P1000 does not come with the superfluous MCSS. The implementation of the code is not expected to cause any problems, the utilized softcores are available on the ProASIC3 as well and the same development environment supports the product.
+
+
