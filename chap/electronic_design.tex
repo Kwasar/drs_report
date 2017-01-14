@@ -103,6 +103,25 @@ A serial $I^2C$ interface is used to operate the DAC.
 \label{sec:directionality Sensor}
 As explained in section \ref{sec:radiation_sensor}, the DRS is composed of 31 sensing diodes, a large anode and guard rings.
 
+In the ``Sensor\_Diodes.SchDoc'' schematic a typical connection of the sensing diodes is shown.
+A high voltage (40-80V) is applied on the cathode and the anode is connected to GND to apply the reverse bias.
+When radiation passes through the depletion region a current is induced.
+This current passes through a resistor, so that at the output a voltage can be read.
+The trade-off for this resistor is done between the resistivity and noise, a value of $2.2M\Omega$ was defined by PSI.
+
+The schematic ``Shield\_Sensor.SchDoc'' shows both, the concept of the large anode and a guard ring.
+Both are split up in 4 equal sub-circuits.
+This approach allows a symmetric distribution of the contacts around the circular detector, which in turn makes the protective effects more symmetric and therefore more effective. 
+
+The large anode is basically connected with a resistor and capacitor.
+The resistor will define current flow and the capacitor will collect the created charges to avoid noise from the area around the detector diodes.
+The capacitors should be chosen as big as possible, so that a large number of charges can be buffered.
+On the other hand this capacitor needs to be compatible with the large biasing voltage, which implies a larger footprint.
+A trade-off has to be done considering the footprint of the capacitor.
+
+The guard rings are rings of reverse biased diodes.
+They will define the outer edge of the depletion region of the large anode and the sensors.
+This is implemented to avoid leakage currents from the outside of the detector.
 
 
 \subsection{Supply Voltages}
