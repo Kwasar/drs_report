@@ -34,7 +34,32 @@ Another important consideration are the available hardware gate resources on the
 	\label{tab:resource}
 \end{table}
 
-These figures can be compared to 
+These figures can be compared to the hardware resources of the current choice for the FPGA.
+
+\begin{table}[H]
+
+\caption[]{UART Core specifications \cite{Actel}}
+    \label{tab:11}
+    
+  \begin{center}  
+  \begin{tabular}{|r|l|}
+  \hline
+  \textbf{Parameter}  & \textbf{Value} \\ \cline{1-2}
+  
+  \textbf{Clock rate} & 20 MHz \\
+  \textbf{Baud Rate [Hz]} & 460800\\ 
+  \textbf{Baud Rate Adjust} & +0.712 \\
+  \textbf{Bit Width} & 8\\
+  \textbf{Active Chip Select} & Low \\
+  \textbf{Enable Parity} & Yes \\
+  \textbf{Parity Type} & Odd \\
+  \hline
+  
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Radiation tolerance of the ProASIC3 A3P1000}
 
 \subsection{\texorpdfstring{$I^2C$}{TEXT} Interfaces}
 \label{sec:i2c_interfaces}
