@@ -21,12 +21,18 @@ Based on the timing behavior of the FPGA hardware (see fig. \ref{fig:Simulation}
 \begin{table}[H]
 	\centering
     \includegraphics[width=1\textwidth]{Data_budget.JPG}
-    \caption[Power Budget]{Maximum data rate and data volume of FPGA sensor readout operation.}
+    \caption[Data Budget]{Maximum data rate and data volume of FPGA sensor readout operation.}
 	\label{tab:data_budget}
 \end{table}
 
-Another important consideration are the available hardware gate resources on the FPGA. In the Libero SoC software, the require digital resources can be estimated.
+Another important consideration are the available hardware gate resources on the FPGA. In the Libero SoC software, the required digital resources can be estimated.
 
+\begin{table}[H]
+	\centering
+    \includegraphics[width=0.2\textwidth]{resource.JPG}
+    \caption[Components]{Share of hardware components used for the synthesis of the design on the SmartFusion2 M2S050}
+	\label{tab:data_budget}
+\end{table}
 
 \subsection{\texorpdfstring{$I^2C$}{TEXT} Interfaces}
 \label{sec:i2c_interfaces}

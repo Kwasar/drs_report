@@ -247,7 +247,7 @@ The ADC is connected to the FPGA using SPI.
 \label{sec:FPGA}
 The ``FPGA.SchDoc'' schematic defines a basic layout of an FPGA\footnote{A3P1000-FG144M} drive circuit.
 J1\footnote{Connector: 3020-10-0300-00} provides a standard interface for programming the FPGA's logic.
-The IO pins of the IO banks are not yet defined, since they depend largely on the logic design.
+The IO pins of the IO banks are not yet defined. That is due to mainly one reason. There about 22 digital CMOS\_3V3  I/O pins that directly interface with the ASIC. In this project, only the CMA digital hardware was developed and documented, a maximum of 6 pins is allocated for this part of the readout. For a prototype board, the I/O assignment is insignificant. It is recommended to connect the FPGA and ASIC pins by other means than conducting tracks for the purpose of oscilloscope tests. The pins on the FPGA can be re-assigned by small changes in the program code.
 
 \subsection{Interface CubeSat}
 \label{sec:interface_cubesat}
